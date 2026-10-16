@@ -13,57 +13,60 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght=400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
         body {
             font-family: 'Noto Sans TC', sans-serif;
-            background-color: #F7F6F3;
+            background-color: #FAF7F2; /* 溫潤秋天米白 */
             -webkit-tap-highlight-color: transparent;
         }
         .active-tab {
-            color: #1E3A8A; /* 神戶港灣深海藍 */
-            border-bottom: 3px solid #1E3A8A;
+            color: #BE3144; /* 浪漫楓紅金 */
+            border-bottom: 3px solid #BE3144;
         }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="pb-24 max-w-md mx-auto bg-white shadow-xl min-h-screen relative">
+<body class="pb-24 max-w-md mx-auto bg-[#FAF7F2] shadow-2xl min-h-screen relative text-slate-800">
 
     <!-- 🔒 專屬登入遮罩 (第一次驗證後自動永久記住) -->
-    <div id="auth-overlay" class="fixed inset-0 bg-[#0F172A] z-[100] flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl text-center">
-            <div class="w-12 h-12 bg-[#1E3A8A] text-white rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
-                <i class="fas fa-anchor"></i>
+    <div id="auth-overlay" class="fixed inset-0 bg-[#0B192C]/90 backdrop-blur-md z-[100] flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-7 shadow-2xl text-center border border-amber-100">
+            <div class="w-14 h-14 bg-gradient-to-tr from-[#BE3144] to-[#F05941] text-white rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-lg shadow-rose-200">
+                <i class="fas fa-heart"></i>
             </div>
-            <h2 class="text-lg font-bold text-gray-800">神戶秋旅 5天4夜</h2>
-            <p class="text-xs text-gray-400 mt-1 mb-5">請輸入專屬 Email 登入以解鎖即時行程與記帳</p>
+            <h2 class="text-xl font-bold text-slate-800 tracking-wide">神戶浪漫秋旅 🍁</h2>
+            <p class="text-xs text-amber-800/60 mt-1 mb-5">2026 慶生之旅 · 雙人專屬登入</p>
 
-            <div class="space-y-3 text-left">
+            <div class="space-y-3.5 text-left">
                 <div>
-                    <label class="text-[11px] font-bold text-gray-400 block mb-1">電子郵件</label>
-                    <input type="email" id="login-email" placeholder="example@gmail.com" class="w-full border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
+                    <label class="text-[11px] font-bold text-slate-400 block mb-1">電子郵件</label>
+                    <input type="email" id="login-email" placeholder="example@gmail.com" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-rose-400 focus:ring-1 focus:ring-rose-400 transition-all">
                 </div>
                 <div>
-                    <label class="text-[11px] font-bold text-gray-400 block mb-1">密碼</label>
-                    <input type="password" id="login-pass" placeholder="••••••••" class="w-full border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
+                    <label class="text-[11px] font-bold text-slate-400 block mb-1">密碼</label>
+                    <input type="password" id="login-pass" placeholder="••••••••" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-rose-400 focus:ring-1 focus:ring-rose-400 transition-all">
                 </div>
-                <p id="login-error" class="text-xs text-red-500 hidden text-center"></p>
-                <button onclick="handleLogin()" class="w-full bg-[#1E3A8A] text-white p-2.5 rounded-xl font-bold text-sm shadow-md active:scale-98 transition-transform mt-2">驗證身份並登入</button>
+                <p id="login-error" class="text-xs text-rose-500 hidden text-center font-medium"></p>
+                <button onclick="handleLogin()" class="w-full bg-gradient-to-r from-[#BE3144] to-[#D97706] text-white p-3 rounded-xl font-bold text-sm shadow-md shadow-rose-200 active:scale-98 transition-transform mt-2">驗證身份並登入</button>
             </div>
         </div>
     </div>
 
-    <!-- 頂部 App Bar -->
-    <header class="bg-[#0F172A] text-white p-4 sticky top-0 z-50 shadow-md safe-top">
+    <!-- 頂部 App Bar (神戶港夜色 + 楓紅漸層標誌) -->
+    <header class="bg-gradient-to-r from-[#0B192C] via-[#1E3E62] to-[#0B192C] text-white p-4 sticky top-0 z-50 shadow-md">
         <div class="flex justify-between items-center">
             <div>
-                <h1 class="text-lg font-bold tracking-wider">神戶浪漫秋旅 ⚓</h1>
-                <p class="text-xs text-gray-400">2026.10.18 ~ 10.22 (5天4夜)</p>
+                <h1 class="text-lg font-bold tracking-wider flex items-center gap-1.5">
+                    <span>神戶浪漫秋旅</span>
+                    <span class="text-amber-400 text-sm">🍁</span>
+                </h1>
+                <p class="text-[11px] text-amber-200/80 font-light">2026.10.18 ~ 10.22 (5天4夜)</p>
             </div>
-            <div id="weather-badge" class="bg-[#1E3A8A] text-xs px-2.5 py-1 rounded-full flex items-center gap-1">
-                <i class="fas fa-cloud-sun"></i> <span>神戶港灣</span>
+            <div id="weather-badge" class="bg-white/10 backdrop-blur-md border border-white/15 text-[11px] px-3 py-1 rounded-full flex items-center gap-1.5 text-amber-100">
+                <i class="fas fa-sparkles text-amber-300"></i> <span>神戶港灣</span>
             </div>
         </div>
     </header>
@@ -73,138 +76,165 @@
         <!-- 行程頁面 -->
         <div id="page-schedule" class="page-section">
             <!-- 天數切換鈕 -->
-            <div class="flex gap-2 overflow-x-auto pb-3 mb-4 no-scrollbar sticky top-[68px] bg-white py-2 z-40 shadow-sm -mx-4 px-4">
-                <button onclick="switchDay(1)" id="day-btn-1" class="day-btn shrink-0 bg-[#0F172A] text-white px-4 py-2 rounded-xl text-sm font-medium">D1 (10/18)</button>
-                <button onclick="switchDay(2)" id="day-btn-2" class="day-btn shrink-0 bg-gray-100 text-gray-600 px-4 py-2 rounded-xl text-sm font-medium">D2 (10/19)🎂</button>
-                <button onclick="switchDay(3)" id="day-btn-3" class="day-btn shrink-0 bg-gray-100 text-gray-600 px-4 py-2 rounded-xl text-sm font-medium">D3 (10/20)</button>
-                <button onclick="switchDay(4)" id="day-btn-4" class="day-btn shrink-0 bg-gray-100 text-gray-600 px-4 py-2 rounded-xl text-sm font-medium">D4 (10/21)</button>
-                <button onclick="switchDay(5)" id="day-btn-5" class="day-btn shrink-0 bg-gray-100 text-gray-600 px-4 py-2 rounded-xl text-sm font-medium">D5 (10/22)</button>
+            <div class="flex gap-2 overflow-x-auto pb-3 mb-3 no-scrollbar sticky top-[68px] bg-[#FAF7F2]/95 backdrop-blur-sm py-2 z-40 -mx-4 px-4">
+                <button onclick="switchDay(1)" id="day-btn-1" class="day-btn shrink-0 bg-gradient-to-r from-[#BE3144] to-[#D97706] text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow-sm">D1 (10/18)</button>
+                <button onclick="switchDay(2)" id="day-btn-2" class="day-btn shrink-0 bg-white text-slate-600 border border-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold shadow-2xs">D2 (10/19) 🎂</button>
+                <button onclick="switchDay(3)" id="day-btn-3" class="day-btn shrink-0 bg-white text-slate-600 border border-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold shadow-2xs">D3 (10/20)</button>
+                <button onclick="switchDay(4)" id="day-btn-4" class="day-btn shrink-0 bg-white text-slate-600 border border-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold shadow-2xs">D4 (10/21)</button>
+                <button onclick="switchDay(5)" id="day-btn-5" class="day-btn shrink-0 bg-white text-slate-600 border border-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold shadow-2xs">D5 (10/22)</button>
             </div>
 
-            <p class="text-[11px] text-gray-400 mb-2 text-center"><i class="fas fa-info-circle mr-1"></i>小提示：直接「點擊行程卡片」即可修改內容與預算費用</p>
+            <p class="text-[11px] text-amber-900/60 mb-3 text-center"><i class="fas fa-hand-pointer mr-1 text-amber-600"></i>直接「點擊行程卡片」即可修改內容與費用</p>
 
-            <!-- 行程清單 -->
+            <!-- 行程清單容器 -->
             <div id="schedule-container" class="space-y-3"></div>
 
             <!-- 新增行程卡片 -->
-            <div class="bg-white p-4 rounded-xl border border-dashed border-gray-300 shadow-sm mt-8 mb-4">
-                <h3 class="text-sm font-bold text-gray-700 mb-3"><i class="fas fa-calendar-plus text-[#1E3A8A] mr-1"></i> ➕ 新增全新行程卡片</h3>
-                <div class="grid grid-cols-2 gap-3 mb-3">
-                    <select id="sch-day" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
+            <div class="bg-white p-4 rounded-2xl border border-dashed border-amber-300/80 shadow-2xs mt-8 mb-4">
+                <h3 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-1.5">
+                    <span class="w-6 h-6 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center text-xs"><i class="fas fa-calendar-plus"></i></span>
+                    <span>➕ 新增自訂行程卡片</span>
+                </h3>
+                <div class="grid grid-cols-2 gap-2.5 mb-2.5">
+                    <select id="sch-day" class="border border-slate-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-rose-400 bg-white">
                         <option value="1">第一天 (10/18)</option>
                         <option value="2">第二天 (10/19)🎂</option>
                         <option value="3">第三天 (10/20)</option>
                         <option value="4">第四天 (10/21)</option>
                         <option value="5">第五天 (10/22)</option>
                     </select>
-                    <input type="text" id="sch-time" placeholder="時間 (如: 14:00-15:30)" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
+                    <input type="text" id="sch-time" placeholder="時間 (如: 14:00-15:30)" class="border border-slate-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-rose-400">
                 </div>
-                <div class="grid grid-cols-2 gap-3 mb-3">
-                    <select id="sch-type" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
+                <div class="grid grid-cols-2 gap-2.5 mb-2.5">
+                    <select id="sch-type" class="border border-slate-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-rose-400 bg-white">
                         <option value="spot">🎯 景點</option>
                         <option value="restaurant">🍱 餐廳</option>
                         <option value="transport">🚌 交通</option>
                         <option value="hotel">🏨 住宿</option>
                     </select>
-                    <input type="text" id="sch-cost" placeholder="費用 (如: 340日幣)" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
+                    <input type="text" id="sch-cost" placeholder="費用 (如: 340日幣)" class="border border-slate-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-rose-400">
+                </div>
+                <div class="mb-2.5">
+                    <input type="text" id="sch-nav" placeholder="Google Maps 導航關鍵字 (選填)" class="w-full border border-slate-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-rose-400">
+                </div>
+                <div class="mb-2.5">
+                    <input type="text" id="sch-title" placeholder="行程標題" class="w-full border border-slate-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-rose-400 font-semibold">
                 </div>
                 <div class="mb-3">
-                    <input type="text" id="sch-nav" placeholder="地圖導航搜尋地標(選填)" class="w-full border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
+                    <textarea id="sch-desc" rows="2" placeholder="詳細說明、推薦餐點或攻略備忘..." class="w-full border border-slate-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-rose-400"></textarea>
                 </div>
-                <div class="mb-3">
-                    <input type="text" id="sch-title" placeholder="行程標題" class="w-full border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
-                </div>
-                <div class="mb-3">
-                    <textarea id="sch-desc" rows="2" placeholder="詳細說明或攻略備忘..." class="w-full border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none"></textarea>
-                </div>
-                <button onclick="addCustomSchedule()" class="w-full bg-[#1E3A8A] text-white p-2.5 rounded-lg text-sm font-bold active:scale-98 transition-transform">將新行程推送到兩端手機</button>
+                <button onclick="addCustomSchedule()" class="w-full bg-gradient-to-r from-[#BE3144] to-[#D97706] text-white p-2.5 rounded-xl text-xs font-bold shadow-md shadow-rose-200 active:scale-98 transition-transform">推送到雙方手機行程表</button>
             </div>
         </div>
 
         <!-- 記帳頁面 -->
         <div id="page-ledger" class="page-section hidden">
-            <div class="bg-gradient-to-br from-[#0F172A] to-[#1E3A8A] text-white p-5 rounded-2xl shadow-md mb-6">
-                <p class="text-xs text-gray-300 tracking-wide uppercase">⚡ 雙人即時同步記帳 (日幣)</p>
-                <h2 id="total-expense" class="text-3xl font-bold mt-1">¥0</h2>
-                <div class="w-full bg-gray-700 h-1.5 rounded-full mt-4 overflow-hidden">
-                    <div id="budget-progress" class="bg-amber-400 h-1.5 rounded-full" style="width: 0%"></div>
+            <!-- 記帳總覽卡片 (秋色漸層) -->
+            <div class="bg-gradient-to-br from-[#0B192C] via-[#1E3E62] to-[#BE3144] text-white p-5 rounded-3xl shadow-xl mb-6 relative overflow-hidden">
+                <div class="absolute -right-4 -bottom-4 text-white/5 text-8xl"><i class="fas fa-coins"></i></div>
+                <p class="text-xs text-amber-200 tracking-wider uppercase font-medium">⚡ 雙人即時同步記帳 (JPY)</p>
+                <h2 id="total-expense" class="text-3xl font-extrabold mt-1 tracking-tight text-white">¥0</h2>
+                <div class="w-full bg-white/20 h-2 rounded-full mt-4 overflow-hidden">
+                    <div id="budget-progress" class="bg-gradient-to-r from-amber-300 to-amber-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
                 </div>
-                <div class="flex justify-between text-xs text-gray-300 mt-2">
-                    <span>已花費</span>
-                    <span>基本交通預算: ¥7,000</span>
+                <div class="flex justify-between text-[11px] text-amber-100/80 mt-2">
+                    <span>累計總花費</span>
+                    <span>基礎交通預備金: ¥7,000</span>
                 </div>
             </div>
 
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm mb-6">
-                <h3 class="text-sm font-bold text-gray-700 mb-3"><i class="fas fa-plus-circle text-[#1E3A8A] mr-1"></i> 新增一筆開銷</h3>
-                <div class="grid grid-cols-2 gap-3 mb-3">
-                    <input type="text" id="exp-title" placeholder="項目 (如: 明石燒)" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
-                    <input type="number" id="exp-amount" placeholder="金額 (JPY)" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
+            <!-- 新增記帳表單 -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm mb-6">
+                <h3 class="text-xs font-bold text-slate-700 mb-3 flex items-center gap-1.5">
+                    <span class="w-5 h-5 rounded-md bg-rose-50 text-rose-600 flex items-center justify-center text-[10px]"><i class="fas fa-plus"></i></span>
+                    <span>新增一筆開銷</span>
+                </h3>
+                <div class="grid grid-cols-2 gap-2.5 mb-2.5">
+                    <input type="text" id="exp-title" placeholder="項目 (如: 明石燒)" class="border border-slate-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-rose-400">
+                    <input type="number" id="exp-amount" placeholder="金額 (JPY)" class="border border-slate-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-rose-400 font-bold">
                 </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <select id="exp-category" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
+                <div class="grid grid-cols-2 gap-2.5">
+                    <select id="exp-category" class="border border-slate-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-rose-400 bg-white">
                         <option value="交通">🚌 交通</option>
                         <option value="美食">🍱 美食</option>
                         <option value="購物">🛍️ 購物</option>
                         <option value="門票">🎟️ 門票/其他</option>
                     </select>
-                    <button onclick="addExpense()" class="bg-[#1E3A8A] text-white rounded-lg text-sm font-bold active:scale-95 transition-transform">加入雲端記帳</button>
+                    <button onclick="addExpense()" class="bg-gradient-to-r from-[#BE3144] to-[#D97706] text-white rounded-xl text-xs font-bold shadow-md shadow-rose-200 active:scale-95 transition-transform">儲存至雲端</button>
                 </div>
             </div>
 
+            <!-- 消費清單 -->
             <div class="space-y-3">
-                <h3 class="text-sm font-bold text-gray-500 tracking-wider uppercase mb-1">消費明細歷史</h3>
+                <h3 class="text-xs font-bold text-slate-500 tracking-wider uppercase mb-1">消費紀錄清單</h3>
                 <div id="expense-list" class="space-y-2"></div>
             </div>
         </div>
 
         <!-- 重要資訊頁面 -->
         <div id="page-info" class="page-section hidden space-y-4">
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                <h3 class="font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2"><i class="fas fa-plane text-blue-600"></i> 航班資訊</h3>
-                <div class="space-y-2 text-sm text-gray-600">
-                    <div class="flex justify-between bg-gray-50 p-2.5 rounded-lg">
+            <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-2xs">
+                <h3 class="font-bold text-slate-800 border-b border-slate-100 pb-2.5 mb-3 flex items-center gap-2 text-sm">
+                    <span class="w-6 h-6 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs"><i class="fas fa-plane"></i></span>
+                    <span>航班時刻資訊 (星宇航空)</span>
+                </h3>
+                <div class="space-y-2.5 text-xs text-slate-600">
+                    <div class="flex justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
                         <span><strong>去程 JX834</strong> (10/18 週日)</span>
-                        <span class="text-blue-700 font-medium">06:50 桃園 T1 → 10:30 神戶 T2</span>
+                        <span class="text-blue-700 font-bold">06:50 桃園 T1 → 10:30 神戶 T2</span>
                     </div>
-                    <div class="flex justify-between bg-gray-50 p-2.5 rounded-lg">
+                    <div class="flex justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
                         <span><strong>回程 JX835</strong> (10/22 週四)</span>
-                        <span class="text-blue-700 font-medium">11:40 神戶 T2 → 13:40 桃園 T1</span>
+                        <span class="text-blue-700 font-bold">11:40 神戶 T2 → 13:40 桃園 T1</span>
                     </div>
                 </div>
             </div>
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                <h3 class="font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2"><i class="fas fa-hotel text-emerald-600"></i> 飯店下榻 (連住4晚)</h3>
-                <div class="border-l-4 border-emerald-500 pl-3 text-sm text-gray-600 space-y-1">
-                    <p class="font-bold text-gray-800">Comfort Hotel ERA Kobe Sannomiya</p>
-                    <p class="text-xs text-gray-500">入住: 10/18 ~ 10/22 (4晚) | 15:00 Check In</p>
-                    <p class="text-xs text-gray-500">鄰近三宮車站，生活與交通機能極佳。</p>
+
+            <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-2xs">
+                <h3 class="font-bold text-slate-800 border-b border-slate-100 pb-2.5 mb-3 flex items-center gap-2 text-sm">
+                    <span class="w-6 h-6 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs"><i class="fas fa-hotel"></i></span>
+                    <span>下榻飯店 (4 晚連住)</span>
+                </h3>
+                <div class="border-l-4 border-emerald-500 pl-3 text-xs text-slate-600 space-y-1">
+                    <p class="font-bold text-slate-800 text-sm">Comfort Hotel ERA Kobe Sannomiya</p>
+                    <p class="text-[11px] text-slate-500">入住時間：10/18 15:00 ~ 10/22 退房</p>
+                    <p class="text-[11px] text-slate-500 leading-relaxed">位於神戶三宮精華商圈，生活機能與交通移動最便利。</p>
                 </div>
             </div>
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                <h3 class="font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2"><i class="fas fa-ticket-alt text-amber-500"></i> 重要交通票券備忘</h3>
-                <div class="text-xs text-gray-600 space-y-2">
-                    <p>🎟️ <strong>D3 三宮姬路一日券 (¥1,600)：</strong>非 24 小時制，限當日有效。在「阪神神戶三宮站」站長室購買。包辦阪神電車、神戶高速線、山陽電車全線。</p>
-                    <p>🚌 <strong>總交通備用金：</strong>建議每人至少預留 7,000 日幣交通現金。</p>
-                    <p>📞 台北駐大阪經濟文化辦事處: +81-6-6443-8481 | 緊急求助: 110 / 119</p>
+
+            <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-2xs">
+                <h3 class="font-bold text-slate-800 border-b border-slate-100 pb-2.5 mb-3 flex items-center gap-2 text-sm">
+                    <span class="w-6 h-6 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-xs"><i class="fas fa-ticket-alt"></i></span>
+                    <span>重點交通票券備忘</span>
+                </h3>
+                <div class="text-xs text-slate-600 space-y-2 leading-relaxed">
+                    <div class="p-2.5 rounded-xl bg-amber-50/60 border border-amber-100">
+                        <p class="font-bold text-amber-900 mb-1">🎟️ D3 三宮姬路一日券 (¥1,600)</p>
+                        <p class="text-[11px] text-amber-800">非 24 小時制，限當日有效。在「阪神神戶三宮站」站長室向站務員出示圖片購買。可無限次搭乘阪神電車、神戶高速線與山陽電車全線！</p>
+                    </div>
+                    <p class="text-[11px] text-slate-500">💰 <strong>交通預備金：</strong>每人建議預留至少 7,000 日幣現金。</p>
+                    <p class="text-[11px] text-slate-500">📞 <strong>緊急求助：</strong>日本報警 110 / 救護車 119 | 台北駐大阪經濟文化辦事處: +81-6-6443-8481</p>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- 編輯 Modal -->
-    <div id="edit-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4 z-50 backdrop-blur-xs">
-        <div class="bg-white w-full max-w-sm rounded-2xl p-5 shadow-2xl animate-fade-in-up">
-            <div class="flex justify-between items-center border-b pb-2.5 mb-4">
-                <h3 class="font-bold text-gray-800 text-base"><i class="fas fa-edit text-[#1E3A8A] mr-1"></i> 修改行程內容</h3>
-                <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600 text-lg p-1">×</button>
+    <!-- 編輯彈窗 Modal -->
+    <div id="edit-modal" class="fixed inset-0 bg-slate-900/60 hidden items-center justify-center p-4 z-50 backdrop-blur-xs">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-5 shadow-2xl animate-fade-in-up border border-slate-100">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-3.5">
+                <h3 class="font-bold text-slate-800 text-sm flex items-center gap-1.5">
+                    <span class="w-6 h-6 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center text-xs"><i class="fas fa-edit"></i></span>
+                    <span>修改行程資料</span>
+                </h3>
+                <button onclick="closeEditModal()" class="text-slate-400 hover:text-slate-600 text-lg p-1">×</button>
             </div>
             <input type="hidden" id="edit-key">
             
-            <div class="grid grid-cols-2 gap-3 mb-3">
+            <div class="grid grid-cols-2 gap-2.5 mb-2.5">
                 <div>
-                    <label class="text-[11px] font-bold text-gray-400 block mb-1">天數</label>
-                    <select id="edit-day" class="w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none">
+                    <label class="text-[11px] font-bold text-slate-400 block mb-1">天數</label>
+                    <select id="edit-day" class="w-full border border-slate-200 rounded-xl p-2 text-xs focus:outline-none focus:border-rose-400 bg-white">
                         <option value="1">D1 (10/18)</option>
                         <option value="2">D2 (10/19)🎂</option>
                         <option value="3">D3 (10/20)</option>
@@ -213,14 +243,14 @@
                     </select>
                 </div>
                 <div>
-                    <label class="text-[11px] font-bold text-gray-400 block mb-1">時間</label>
-                    <input type="text" id="edit-time" class="w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none">
+                    <label class="text-[11px] font-bold text-slate-400 block mb-1">時間</label>
+                    <input type="text" id="edit-time" class="w-full border border-slate-200 rounded-xl p-2 text-xs focus:outline-none focus:border-rose-400">
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-3 mb-3">
+            <div class="grid grid-cols-2 gap-2.5 mb-2.5">
                 <div>
-                    <label class="text-[11px] font-bold text-gray-400 block mb-1">分類</label>
-                    <select id="edit-type" class="w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none">
+                    <label class="text-[11px] font-bold text-slate-400 block mb-1">分類</label>
+                    <select id="edit-type" class="w-full border border-slate-200 rounded-xl p-2 text-xs focus:outline-none focus:border-rose-400 bg-white">
                         <option value="spot">🎯 景點</option>
                         <option value="restaurant">🍱 餐廳</option>
                         <option value="transport">🚌 交通</option>
@@ -228,38 +258,38 @@
                     </select>
                 </div>
                 <div>
-                    <label class="text-[11px] font-bold text-gray-400 block mb-1">預估費用金額</label>
-                    <input type="text" id="edit-cost" class="w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none" placeholder="如: 340日幣">
+                    <label class="text-[11px] font-bold text-slate-400 block mb-1">預估費用金額</label>
+                    <input type="text" id="edit-cost" class="w-full border border-slate-200 rounded-xl p-2 text-xs focus:outline-none focus:border-rose-400" placeholder="如: 340日幣">
                 </div>
             </div>
-            <div class="mb-3">
-                <label class="text-[11px] font-bold text-gray-400 block mb-1">地圖導航地標</label>
-                <input type="text" id="edit-nav" class="w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none">
+            <div class="mb-2.5">
+                <label class="text-[11px] font-bold text-slate-400 block mb-1">Google Maps 搜尋地標</label>
+                <input type="text" id="edit-nav" class="w-full border border-slate-200 rounded-xl p-2 text-xs focus:outline-none focus:border-rose-400">
             </div>
-            <div class="mb-3">
-                <label class="text-[11px] font-bold text-gray-400 block mb-1">行程標題</label>
-                <input type="text" id="edit-title" class="w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none">
+            <div class="mb-2.5">
+                <label class="text-[11px] font-bold text-slate-400 block mb-1">行程標題</label>
+                <input type="text" id="edit-title" class="w-full border border-slate-200 rounded-xl p-2 text-xs focus:outline-none focus:border-rose-400 font-semibold">
             </div>
             <div class="mb-4">
-                <label class="text-[11px] font-bold text-gray-400 block mb-1">說明與備忘</label>
-                <textarea id="edit-desc" rows="3" class="w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none"></textarea>
+                <label class="text-[11px] font-bold text-slate-400 block mb-1">說明與備忘</label>
+                <textarea id="edit-desc" rows="3" class="w-full border border-slate-200 rounded-xl p-2 text-xs focus:outline-none focus:border-rose-400"></textarea>
             </div>
-            <div class="flex gap-3">
-                <button onclick="closeEditModal()" class="w-1/3 border border-gray-200 text-gray-500 rounded-xl text-sm font-medium py-2.5">取消</button>
-                <button onclick="saveScheduleUpdate()" class="w-2/3 bg-[#1E3A8A] text-white rounded-xl text-sm font-bold py-2.5 shadow-md active:scale-98 transition-transform">儲存並即時更新</button>
+            <div class="flex gap-2.5">
+                <button onclick="closeEditModal()" class="w-1/3 border border-slate-200 text-slate-500 rounded-xl text-xs font-medium py-2.5">取消</button>
+                <button onclick="saveScheduleUpdate()" class="w-2/3 bg-gradient-to-r from-[#BE3144] to-[#D97706] text-white rounded-xl text-xs font-bold py-2.5 shadow-md shadow-rose-200 active:scale-98 transition-transform">儲存並即時更新</button>
             </div>
         </div>
     </div>
 
-    <!-- 底部導航 -->
-    <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-gray-200 flex justify-around py-2.5 shadow-lg z-50 safe-bottom">
-        <button onclick="navTo('schedule')" id="nav-schedule" class="flex flex-col items-center gap-0.5 text-xs font-medium active-tab w-full">
+    <!-- 底部導航欄 -->
+    <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/95 backdrop-blur-md border-t border-slate-200/80 flex justify-around py-2 shadow-lg z-50">
+        <button onclick="navTo('schedule')" id="nav-schedule" class="flex flex-col items-center gap-0.5 text-xs font-bold active-tab w-full">
             <i class="fas fa-map-marked-alt text-lg mb-0.5"></i>行程
         </button>
-        <button onclick="navTo('ledger')" id="nav-ledger" class="flex flex-col items-center gap-0.5 text-xs font-medium text-gray-400 w-full">
+        <button onclick="navTo('ledger')" id="nav-ledger" class="flex flex-col items-center gap-0.5 text-xs font-medium text-slate-400 w-full">
             <i class="fas fa-wallet text-lg mb-0.5"></i>雙人記帳
         </button>
-        <button onclick="navTo('info')" id="nav-info" class="flex flex-col items-center gap-0.5 text-xs font-medium text-gray-400 w-full">
+        <button onclick="navTo('info')" id="nav-info" class="flex flex-col items-center gap-0.5 text-xs font-medium text-slate-400 w-full">
             <i class="fas fa-info-circle text-lg mb-0.5"></i>重要資訊
         </button>
     </nav>
@@ -285,7 +315,7 @@
         const database = firebase.database();
         let expenseRef, scheduleRef;
 
-        // 登入監聽
+        // 登入狀態監聽 (保持登入)
         auth.onAuthStateChanged((user) => {
             const overlay = document.getElementById('auth-overlay');
             if (user) {
@@ -315,68 +345,71 @@
                 });
         }
 
-        // 神戶專屬行程預載庫
+        // 神戶 2 版最新行程資料庫 (包含桌球店 & 千姬茶屋等最新微調)
         const defaultSchedules = [
             // D1 (10/18 週日)
-            { day: 1, time: "06:50-10:30", type: "transport", title: "桃園機場 T1 → 神戶機場 T2", desc: "星宇航空 JX834，抵達後前往1航廈2樓搭乘 Port Liner。", nav: "神戶機場", cost: "" },
-            { day: 1, time: "11:30-11:48", type: "transport", title: "Port Liner：神戶空港站 → 三宮站", desc: "搭乘神戶新交通鐵道，直達三宮市區。", nav: "神戶空港站", cost: "340日幣" },
-            { day: 1, time: "12:00-13:00", type: "restaurant", title: "飯店寄行李 ＆ 午餐：天婦羅 Makino", desc: "至 Comfort Hotel ERA Kobe 寄放行李。午餐推薦 Center Plaza B1F 的天婦羅まきの(必點炸雞蛋/玉子天)！", nav: "まきの センタープラザ店", cost: "" },
-            { day: 1, time: "13:00-15:00", type: "spot", title: "三宮中心商店街 & 百貨漫遊", desc: "逛三宮0101、神戶阪急(1F有藍瓶咖啡)、神戶M-int等。", nav: "三宮中心商店街", cost: "" },
-            { day: 1, time: "15:00-15:30", type: "hotel", title: "Comfort Hotel ERA Kobe Sannomiya CHECK IN", desc: "辦理入住稍作休息，準備出發看夜景。", nav: "Comfort Hotel ERA Kobe Sannomiya", cost: "" },
-            { day: 1, time: "16:00-17:00", type: "transport", title: "三宮搭 18 號公車 → 摩耶纜車站", desc: "於神戶阪急對面「三宮駅前」搭乘18號公車(16:15或16:45班次)，約25分抵達「摩耶ケーブル下」。", nav: "三宮駅前 公車站", cost: "230日幣" },
-            { day: 1, time: "17:00-18:00", type: "spot", title: "摩耶山掬星台觀賞「千萬夜景」", desc: "搭兩段纜車(登山車+空中纜車)至掬星台，飽覽日本三大夜景！(纜車來回票價1,560日幣)", nav: "摩耶山 掬星台", cost: "1560日幣" },
-            { day: 1, time: "18:00-18:30", type: "transport", title: "搭纜車下山", desc: "搭乘兩段纜車返回地面纜車站。", nav: "", cost: "" },
-            { day: 1, time: "18:30-19:30", type: "transport", title: "搭 18 號公車返回三宮站", desc: "搭公車(18:20或18:50班次)返回三宮市區。", nav: "", cost: "230日幣" },
-            { day: 1, time: "19:30-21:00", type: "restaurant", title: "晚餐 & 逛三宮地下街與百貨", desc: "在三宮熱鬧商圈享用晚餐並散步逛街。", nav: "三宮地下街", cost: "" },
+            { day: 1, time: "06:50-10:30", type: "transport", title: "桃園機場 T1 → 神戶機場 T2", desc: "星宇航空 JX834，抵達後前往 1 航廈 2 樓搭乘 Port Liner。", nav: "神戶機場", cost: "" },
+            { day: 1, time: "11:30-11:48", type: "transport", title: "Port Liner：神戶空港站 → 三宮站", desc: "搭乘神戶新交通，直達三宮市區。", nav: "神戶空港站", cost: "340日幣" },
+            { day: 1, time: "12:00-13:00", type: "restaurant", title: "飯店寄放行李 ＆ 午餐：天婦羅 Makino", desc: "至 Comfort Hotel ERA Kobe Sannomiya 寄行李。午餐推薦 Center Plaza B1F 天婦羅まきの(必點炸雞蛋/玉子天)！", nav: "まきの センタープラザ店", cost: "" },
+            { day: 1, time: "13:00-13:16", type: "spot", title: "三宮中心商店街 & 百貨漫遊", desc: "逛神戶0101、神戶阪急(1F有藍瓶咖啡)、神戶M-int等。", nav: "三宮中心商店街", cost: "" },
+            { day: 1, time: "13:16-13:20", type: "transport", title: "三宮站 → 神戶站 (JR神戶線)", desc: "三宮站 3 月台搭 JR 神戶線(須磨行) ➔ 神戶站 4 月台。", nav: "神戶站", cost: "150日幣" },
+            { day: 1, time: "13:30-14:35", type: "spot", title: "高速神戶站地下街：市內最大乒乓球館 🏓", desc: "出神戶站往北步行約 2 分鐘至高速神戶站地下街，探索市內最大的乒乓球館與桌球店(營業至20:00)！", nav: "高速神戶站", cost: "" },
+            { day: 1, time: "14:48-14:51", type: "transport", title: "神戶站 → 三宮站 (JR神戶線新快速)", desc: "神戶站 2 月台搭 JR 新快速(敦賀行)返回三宮站 1 月台。", nav: "三宮站", cost: "150日幣" },
+            { day: 1, time: "15:00-15:30", type: "hotel", title: "Comfort Hotel ERA Kobe Sannomiya 入住", desc: "辦理 CHECK IN，稍作歇息準備傍晚看夜景。", nav: "Comfort Hotel ERA Kobe Sannomiya", cost: "" },
+            { day: 1, time: "16:00-17:00", type: "transport", title: "三宮搭 18 號公車 → 摩耶纜車站", desc: "於神戶阪急對面「三宮駅前」搭乘 18 號公車(16:15或16:45班次)，約 25 分抵達「摩耶ケーブル下」。", nav: "三宮駅前 公車站", cost: "230日幣" },
+            { day: 1, time: "17:00-18:00", type: "spot", title: "摩耶山掬星台觀賞「千萬夜景」✨", desc: "搭乘兩段纜車(登山車+空中纜車)至掬星台，飽覽日本三大夜景！(纜車來回 1,560 日幣)", nav: "摩耶山 掬星台", cost: "1560日幣" },
+            { day: 1, time: "18:00-18:30", type: "transport", title: "搭纜車返回地面纜車站", desc: "搭乘兩段纜車回到摩耶ケーブル下。", nav: "", cost: "" },
+            { day: 1, time: "18:30-19:30", type: "transport", title: "搭 18 號公車返回三宮站", desc: "公車時刻約 18:20 與 18:50 各一班，約 25 分鐘返回三宮。", nav: "", cost: "230日幣" },
+            { day: 1, time: "19:30-21:00", type: "restaurant", title: "晚餐 & 逛三宮地下街、商店街、百貨", desc: "在熱鬧的三宮市區享用美味晚餐與逛街。", nav: "三宮站", cost: "" },
 
-            // D2 (10/19 週一) 🎂 寶貝生日
-            { day: 2, time: "08:00-09:00", type: "restaurant", title: "出門悠閒享用早餐", desc: "🎂 寶貝生日快樂！展開浪漫歡慶的一天。", nav: "", cost: "" },
-            { day: 2, time: "09:31-10:01", type: "transport", title: "神戶三宮 → 須磨浦公園站", desc: "神戶三宮(阪急/高速)1、2月台 → 高速神戶站4月台(往山陽姬路) → 須磨浦公園站。", nav: "須磨浦公園車站", cost: "400日幣" },
-            { day: 2, time: "10:05-14:30", type: "spot", title: "須磨浦山上遊樂園 (搭纜車A路線)", desc: "搭乘空中纜車、爬坡軌道車、旋轉展望閣與觀光纜車，環山俯瞰壯闊明石海景！(來回票價2,100日幣)", nav: "須磨浦山上遊樂園", cost: "2100日幣" },
-            { day: 2, time: "14:59-15:26", type: "transport", title: "須磨浦公園站 → 元町站", desc: "搭乘山陽電氣鐵道本線特急(大阪梅田行)。", nav: "元町車站", cost: "400日幣" },
-            { day: 2, time: "15:30-18:00", type: "spot", title: "元町商店街 & 南京町中華街漫步", desc: "必買伴手禮：神戶風月堂本店法蘭酥、Frantz魔法瓶布丁、Morozoff鑽石巧克力。晚餐推薦珉珉元町風餃子！一路逛往美利堅公園。", nav: "元町商店街", cost: "" },
-            { day: 2, time: "18:30-18:50", type: "spot", title: "美利堅公園：璀璨煙火秀 🎆", desc: "海港浪漫煙火秀，絕美拍照時刻！", nav: "美利堅公園", cost: "" },
-            { day: 2, time: "19:00-20:00", type: "restaurant", title: "生日浪漫晚餐", desc: "在美利堅公園週遭或港灣景觀餐廳共度生日晚餐。", nav: "", cost: "" },
-            { day: 2, time: "20:00-21:00", type: "spot", title: "神戶港塔 (展望層+屋頂平台)", desc: "欣賞神戶港璀璨夜景(門票1,200日幣)。PORT TERRACE餐廳可品嚐神戶塔造型布丁！", nav: "神戶港塔", cost: "1200日幣" },
-            { day: 2, time: "21:00-22:00", type: "hotel", title: "買生日蛋糕 ＆ 散步回飯店慶生", desc: "沿途選購美味蛋糕，步行約30分鐘回 Comfort Hotel 歡度生日之夜 🎂！", nav: "Comfort Hotel ERA Kobe Sannomiya", cost: "" },
+            // D2 (10/19 週一) 🎂 寶貝生日快樂
+            { day: 2, time: "08:00-09:00", type: "restaurant", title: "出門悠閒享用早餐 🎂", desc: "祝親愛的寶貝生日快樂！開啟滿滿幸福與浪漫的一天。", nav: "", cost: "" },
+            { day: 2, time: "09:31-10:01", type: "transport", title: "神戶三宮 → 須磨浦公園站", desc: "神戶三宮(阪急/高速)1、2月台 ➔ 高速神戶站4月台(往山陽姬路) ➔ 抵達須磨浦公園站。", nav: "須磨浦公園車站", cost: "400日幣" },
+            { day: 2, time: "10:05-14:30", type: "spot", title: "須磨浦山上遊樂園 (搭纜車A路線)", desc: "搭乘空中纜車、爬坡軌道車、旋轉展望閣與觀光纜車，環山俯瞰壯闊明石海景！(來回票價 2,100 日幣)", nav: "須磨浦山上遊樂園", cost: "2100日幣" },
+            { day: 2, time: "14:59-15:26", type: "transport", title: "須磨浦公園站 → 元町站", desc: "搭乘山陽電鐵本線特急(大阪梅田行)。", nav: "元町車站", cost: "400日幣" },
+            { day: 2, time: "15:30-18:00", type: "spot", title: "元町商店街 & 南京町中華街漫步", desc: "伴手禮：神戶風月堂本店法蘭酥、Frantz魔法瓶布丁、Morozoff鑽石巧克力。元町老字號「珉珉」招牌元町風餃子、天津飯。一路散步往美利堅公園。", nav: "元町商店街", cost: "" },
+            { day: 2, time: "18:30-18:50", type: "spot", title: "美利堅公園：浪漫璀璨煙火秀 🎆", desc: "海港夜空煙火綻放，最浪漫的生日瞬間！", nav: "美利堅公園", cost: "" },
+            { day: 2, time: "19:00-20:00", type: "restaurant", title: "生日浪漫晚餐慶祝", desc: "在神戶港邊或景觀餐廳享用生日晚餐。", nav: "", cost: "" },
+            { day: 2, time: "20:00-21:00", type: "spot", title: "神戶港塔展望層看夜景", desc: "欣賞神戶港迷人夜色(門票 1,200 日幣)。PORT TERRACE 餐廳可品嚐招牌神戶塔造型布丁！", nav: "神戶港塔", cost: "1200日幣" },
+            { day: 2, time: "21:00-22:00", type: "hotel", title: "買生日蛋糕 ＆ 散步回飯店切蛋糕慶生", desc: "沿途選購美味蛋糕，散步回飯店共度溫馨慶生之夜 🎂！", nav: "Comfort Hotel ERA Kobe Sannomiya", cost: "" },
 
             // D3 (10/20 週二)
-            { day: 3, time: "08:00-09:00", type: "restaurant", title: "出門享用早餐", desc: "準備前往姬路與明石一日遊。", nav: "", cost: "" },
-            { day: 3, time: "09:00-09:15", type: "transport", title: "購買「三宮姬路一日券」", desc: "於阪神神戶三宮站「站長室」出示圖片購買，限當日有效(票價1,600日幣)。全天交通全包！", nav: "阪神神戶三宮站", cost: "1600日幣" },
-            { day: 3, time: "09:15-10:22", type: "transport", title: "神戶三宮站 → 山陽姬路站", desc: "搭乘阪神本線直通特急(山陽姬路行)3月台，使用一日券免費搭乘。", nav: "山陽姬路站", cost: "一日券" },
-            { day: 3, time: "10:40-12:40", type: "spot", title: "參觀國寶：姬路城 (白鷺城)", desc: "日本第一名城，世界文化遺產！門票1,000日幣。", nav: "姬路城", cost: "1000日幣" },
-            { day: 3, time: "12:40-15:00", type: "restaurant", title: "姬路城周邊商店街 & 午餐", desc: "逛御幸通、二階町商店街。必吃美食：炭烤穴子魚(やま義)、炸豬排(赤心本店)、鯛燒本舖。", nav: "姬路御幸通商店街", cost: "" },
+            { day: 3, time: "08:00-09:00", type: "restaurant", title: "出門享用活力早餐", desc: "今天啟程前往世界遺產姬路城與舞子海峽！", nav: "", cost: "" },
+            { day: 3, time: "09:00-09:15", type: "transport", title: "購買「三宮姬路一日券」", desc: "於阪神神戶三宮站「站長室」出示票券名稱圖片購買(¥1,600)。當日電車全包無限次搭乘！", nav: "阪神神戶三宮站", cost: "1600日幣" },
+            { day: 3, time: "09:15-10:22", type: "transport", title: "神戶三宮站 → 山陽姬路站", desc: "搭乘阪神本線直通特急(山陽姬路行)3月台，使用一日券。", nav: "山陽姬路站", cost: "一日券" },
+            { day: 3, time: "10:40-12:40", type: "spot", title: "參觀國寶：姬路城 (白鷺城)", desc: "日本第一名城、世界文化遺產！(門票 1,000 日幣，開放至 17:00)", nav: "姬路城", cost: "1000日幣" },
+            { day: 3, time: "12:40-15:00", type: "restaurant", title: "姬路商店街午餐：推薦千姬茶屋/穴子魚", desc: "逛御幸通、二階町商店街。特別推薦：Egret Himeji 1F「千姬茶屋」招牌吻仔魚丼飯、大滿足星鰻丼套餐(11:00-14:30)；或炭燒穴子やま義、赤心本店炸豬排、鯛燒本舖！", nav: "千姫茶屋", cost: "" },
             { day: 3, time: "15:12-15:46", type: "transport", title: "山陽姬路站 → 山陽明石站", desc: "搭乘山陽電鐵直通特急(大阪梅田行)3或4月台，使用一日券。", nav: "山陽明石站", cost: "一日券" },
-            { day: 3, time: "15:55-16:35", type: "spot", title: "明石魚棚商店街 (400年歷史)", desc: "南口步行5分鐘。兵庫必吃名物：明石燒！名店推薦「あかし多幸」玉子燒或「よし川」。", nav: "魚棚商店街", cost: "" },
-            { day: 3, time: "16:47-16:51", type: "transport", title: "山陽明石站 → 舞子公園站", desc: "搭乘山陽直通特急(大阪梅田行)，使用一日券。", nav: "舞子公園站", cost: "一日券" },
-            { day: 3, time: "17:00-18:00", type: "spot", title: "舞子海上步道 & 明石海峽大橋日落", desc: "觀賞明石海峽大橋絕美日落(約17:21)。漫步舞子海上步道(門票250日幣)。", nav: "舞子海上步道", cost: "250日幣" },
-            { day: 3, time: "18:11-18:36", type: "transport", title: "舞子公園站 → 元町站", desc: "搭乘山陽直通特急(大阪梅田行)返回元町，使用一日券。", nav: "元町站", cost: "一日券" },
-            { day: 3, time: "18:45-21:00", type: "restaurant", title: "晚餐：明石燒司 ＆ 逛三宮商圈", desc: "晚餐品嚐更滑嫩的「明石燒司」，逛三宮地下街與商店街。", nav: "明石燒 司", cost: "" },
+            { day: 3, time: "15:55-16:35", type: "spot", title: "明石魚棚商店街 (400年老街)", desc: "南口步行 5 分鐘。必吃兵庫名物「明石燒」！名店推薦「あかし多幸(招牌玉子燒)」或「よし川」。", nav: "魚之棚商店街", cost: "" },
+            { day: 3, time: "16:47-16:51", type: "transport", title: "山陽明石站 → 舞子公園站", desc: "搭乘山陽電鐵直通特急(大阪梅田行)，使用一日券。", nav: "舞子公園站", cost: "一日券" },
+            { day: 3, time: "17:00-18:00", type: "spot", title: "舞子海上步道 & 明石海峽大橋日落 🌅", desc: "欣賞明石海峽壯觀日落景象(預計 17:21)。漫步舞子海上步道(門票 250 日幣)。提早到可多逛橋的科學館(門票 500 日幣)。", nav: "舞子海上步道", cost: "250日幣" },
+            { day: 3, time: "18:11-18:36", type: "transport", title: "舞子公園站 → 元町站", desc: "搭乘山陽直通特急(大阪梅田行)返回元町站，使用一日券。", nav: "元町站", cost: "一日券" },
+            { day: 3, time: "18:45-21:00", type: "restaurant", title: "晚餐：明石燒司 ＆ 逛三宮地下街", desc: "品嚐口感更嫩滑的「明石燒司」(18:00起營業)，逛商店街採購。", nav: "明石燒 司", cost: "" },
 
             // D4 (10/21 週三)
-            { day: 4, time: "08:30-09:30", type: "restaurant", title: "出門享用活力早餐", desc: "今天前往須磨海洋世界看虎鯨！", nav: "", cost: "" },
-            { day: 4, time: "09:39-09:52", type: "transport", title: "三宮站 → 須磨海濱公園站", desc: "搭乘 JR 神戶線(西明石行)3月台。", nav: "須磨海濱公園站", cost: "200日幣" },
-            { day: 4, time: "10:00-14:00", type: "spot", title: "須磨海洋世界 & 館內午餐", desc: "西日本唯一虎鯨展示區！震撼力十足的虎鯨與海豚表演(門票3,100日幣)。", nav: "須磨海洋世界", cost: "3100日幣" },
+            { day: 4, time: "08:30-09:30", type: "restaurant", title: "出門悠閒享用早餐", desc: "今天前往須磨海洋世界看可愛的虎鯨與海豚！", nav: "", cost: "" },
+            { day: 4, time: "09:39-09:52", type: "transport", title: "三宮站 → 須磨海濱公園站", desc: "搭乘 JR 神戶線(西明石行) 3 月台。", nav: "須磨海濱公園站", cost: "200日幣" },
+            { day: 4, time: "10:00-14:00", type: "spot", title: "須磨海洋世界 & 館內午餐 🐬", desc: "西日本唯一虎鯨展示區！震撼力十足的虎鯨與海豚精彩展演(門票 3,100 日幣)。", nav: "須磨海洋世界", cost: "3100日幣" },
             { day: 4, time: "14:14-14:41", type: "transport", title: "須磨海濱公園站 → 新神戶站", desc: "JR神戶線至新長田站(150日幣) ➔ 轉神戶市營地下鐵至新神戶站(280日幣)。", nav: "新神戶站", cost: "430日幣" },
-            { day: 4, time: "14:50-17:30", type: "spot", title: "北野異人館街漫步", desc: "充滿異國風情的洋館街，一路漫步往三宮方向逛回去。", nav: "北野異人館街", cost: "" },
-            { day: 4, time: "17:30-18:30", type: "spot", title: "神戶市役所 24F 展望台 (免費)", desc: "居高臨下俯瞰神戶市區與海港全景，免費開放至 22:00。", nav: "神戶市役所 24樓展望台", cost: "" },
-            { day: 4, time: "18:30-21:00", type: "restaurant", title: "晚餐 & 百貨藥妝最後衝刺大採購", desc: "三宮地下街、商店街購物與美食巡禮。", nav: "三宮站", cost: "" },
+            { day: 4, time: "14:50-17:30", type: "spot", title: "北野異人館街浪漫散策", desc: "充滿歐風異國情調的優雅街道，一路往三宮方向逛回去。", nav: "北野異人館街", cost: "" },
+            { day: 4, time: "17:30-18:30", type: "spot", title: "神戶市役所 24F 展望台 (免費展望)", desc: "居高臨下遠眺神戶市景與港灣景色，免費開放參觀至 22:00。", nav: "神戶市役所 24樓展望台", cost: "" },
+            { day: 4, time: "18:30-21:00", type: "restaurant", title: "晚餐 & 百貨伴手禮最後大採購", desc: "三宮地下街、商店街大採購與美食巡禮。", nav: "三宮站", cost: "" },
 
             // D5 (10/22 週四)
             { day: 5, time: "08:30-08:50", type: "hotel", title: "飯店 CHECK OUT", desc: "Comfort Hotel ERA Kobe 辦理退房，準備前往機場。", nav: "Comfort Hotel ERA Kobe Sannomiya", cost: "" },
-            { day: 5, time: "09:04-09:24", type: "transport", title: "Port Liner：三宮站 → 神戶空港站", desc: "搭乘神戶新交通直達神戶機場1航廈2樓。", nav: "神戶空港站", cost: "340日幣" },
-            { day: 5, time: "09:30-11:40", type: "spot", title: "機場報到 & 享用早餐", desc: "前往神戶機場2航廈星宇航空櫃檯報到出境，採購最後伴手禮。", nav: "神戶機場 2航廈", cost: "" },
-            { day: 5, time: "11:40-13:40", type: "transport", title: "神戶機場 T2 → 桃園機場 T1 (JX835)", desc: "搭乘星宇航空返台，滿載幸福回憶平安賦歸！", nav: "桃園國際機場", cost: "" }
+            { day: 5, time: "09:04-09:24", type: "transport", title: "Port Liner：三宮站 → 神戶空港站", desc: "搭乘神戶新交通直達神戶機場 1 航廈 2 樓。", nav: "神戶空港站", cost: "340日幣" },
+            { day: 5, time: "09:30-11:40", type: "spot", title: "機場報到 & 享用早餐", desc: "前往神戶機場 2 航廈星宇航空櫃檯報到出境，採購最後伴手禮。", nav: "神戶機場 2航廈", cost: "" },
+            { day: 5, time: "11:40-13:40", type: "transport", title: "神戶機場 T2 → 桃園機場 T1 (JX835)", desc: "搭乘星宇航空返台，滿載慶生與秋旅的美好回憶平安歸國！", nav: "桃園國際機場", cost: "" }
         ];
 
         let globalSchedules = [];
         let currentActiveDay = 1;
 
         function initDatabaseListeners() {
-            // 獨立的神戶節點，不影響之前的九州資料
             expenseRef = database.ref('kobe_expenses');
             scheduleRef = database.ref('kobe_schedules');
 
+            // 確保資料庫有預載最新的 2 版行程
             scheduleRef.once('value', (snapshot) => {
                 if (!snapshot.exists()) {
                     defaultSchedules.forEach(item => scheduleRef.push(item));
@@ -404,23 +437,23 @@
                     items.forEach(item => {
                         total += item.amount;
                         html += `
-                            <div class="bg-white px-4 py-3 rounded-xl border border-gray-100 shadow-sm flex justify-between items-center">
+                            <div class="bg-white px-4 py-3 rounded-2xl border border-slate-100 shadow-2xs flex justify-between items-center">
                                 <div class="flex items-center gap-3">
-                                    <span class="text-lg">${item.category === '交通' ? '🚌' : item.category === '美食' ? '🍱' : item.category === '購物' ? '🛍' : '🎟️'}</span>
+                                    <span class="text-xl">${item.category === '交通' ? '🚌' : item.category === '美食' ? '🍱' : item.category === '購物' ? '🛍️' : '🎟️'}</span>
                                     <div class="text-left">
-                                        <p class="text-sm font-bold text-gray-800">${item.title}</p>
-                                        <p class="text-[10px] text-gray-400">${new Date(item.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+                                        <p class="text-xs font-bold text-slate-800">${item.title}</p>
+                                        <p class="text-[10px] text-slate-400">${new Date(item.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-3">
-                                    <span class="text-sm font-bold text-blue-600">¥${item.amount.toLocaleString()}</span>
-                                    <button onclick="deleteExpense('${item.id}')" class="text-gray-300 hover:text-red-500 transition-colors text-xs p-1"><i class="fas fa-trash-alt"></i></button>
+                                <div class="flex items-center gap-2.5">
+                                    <span class="text-sm font-extrabold text-[#BE3144]">¥${item.amount.toLocaleString()}</span>
+                                    <button onclick="deleteExpense('${item.id}')" class="text-slate-300 hover:text-rose-500 transition-colors text-xs p-1"><i class="fas fa-trash-alt"></i></button>
                                 </div>
                             </div>
                         `;
                     });
                 } else {
-                    html = `<p class="text-xs text-gray-400 text-center py-6">目前沒有開銷紀錄，開始記帳吧！</p>`;
+                    html = `<p class="text-xs text-slate-400 text-center py-6">目前沒有開銷紀錄，隨時開始記帳吧！</p>`;
                 }
 
                 listContainer.innerHTML = html;
@@ -436,23 +469,21 @@
             document.getElementById(`page-${pageId}`).classList.remove('hidden');
             document.querySelectorAll('nav button').forEach(el => {
                 el.classList.remove('active-tab');
-                el.classList.add('text-gray-400');
+                el.classList.add('text-slate-400');
             });
             const activeBtn = document.getElementById(`nav-${pageId}`);
             activeBtn.classList.add('active-tab');
-            activeBtn.classList.remove('text-gray-400');
+            activeBtn.classList.remove('text-slate-400');
         }
 
         function switchDay(dayNum) {
             currentActiveDay = dayNum;
             document.querySelectorAll('.day-btn').forEach(btn => {
-                btn.classList.remove('bg-[#0F172A]', 'text-white');
-                btn.classList.add('bg-gray-100', 'text-gray-600');
+                btn.className = "day-btn shrink-0 bg-white text-slate-600 border border-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold shadow-2xs";
             });
             const activeBtn = document.getElementById(`day-btn-${dayNum}`);
             if (activeBtn) {
-                activeBtn.classList.remove('bg-gray-100', 'text-gray-600');
-                activeBtn.classList.add('bg-[#0F172A]', 'text-white');
+                activeBtn.className = "day-btn shrink-0 bg-gradient-to-r from-[#BE3144] to-[#D97706] text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow-md shadow-rose-200";
             }
             renderScheduleCards();
         }
@@ -462,53 +493,54 @@
             const dayItems = globalSchedules.filter(item => item.day == dayNum);
             dayItems.sort((a, b) => a.time.localeCompare(b.time));
 
-            let locText = "行程"; let weatherText = "☀️ 秋高氣爽 18°C ~ 23°C";
-            if(dayNum == 1) { locText = "神戶三宮 & 摩耶山"; weatherText = "晴朗 18°C ~ 23°C"; }
-            else if(dayNum == 2) { locText = "須磨浦 & 神戶港 (🎂慶生)"; weatherText = "晴天 19°C ~ 24°C"; }
-            else if(dayNum == 3) { locText = "姬路城 & 明石海峽日落"; weatherText = "多雲時晴 18°C ~ 23°C"; }
-            else if(dayNum == 4) { locText = "須磨海洋世界 & 北野異人館"; weatherText = "晴朗 19°C ~ 24°C"; }
-            else if(dayNum == 5) { locText = "神戶機場"; weatherText = "多雲 17°C ~ 22°C"; }
+            let locText = "神戶行程"; let weatherText = "☀️ 18°C ~ 23°C";
+            if(dayNum == 1) { locText = "三宮 · 高速神戶 · 摩耶山"; weatherText = "晴天 18°C ~ 23°C"; }
+            else if(dayNum == 2) { locText = "須磨浦 · 神戶港 (🎂慶生)"; weatherText = "晴朗 19°C ~ 24°C"; }
+            else if(dayNum == 3) { locText = "姬路城 · 魚棚 · 明石海峽日落"; weatherText = "秋高氣爽 18°C ~ 23°C"; }
+            else if(dayNum == 4) { locText = "須磨海洋世界 · 北野異人館"; weatherText = "晴時多雲 19°C ~ 24°C"; }
+            else if(dayNum == 5) { locText = "神戶機場返台"; weatherText = "多雲 17°C ~ 22°C"; }
 
-            document.getElementById('weather-badge').innerHTML = `<i class="fas fa-cloud-sun"></i> <span>${locText} · ${weatherText}</span>`;
+            document.getElementById('weather-badge').innerHTML = `<i class="fas fa-sparkles text-amber-300"></i> <span>${locText}</span>`;
 
             let html = '';
             if (dayItems.length === 0) {
-                html = `<p class="text-xs text-gray-400 text-center py-12 border border-dashed border-gray-200 rounded-xl bg-gray-50">今天目前沒有安排行程，在下方新增一筆吧！</p>`;
+                html = `<p class="text-xs text-slate-400 text-center py-12 border border-dashed border-slate-200 rounded-2xl bg-white/50">今天目前沒有安排行程，在下方新增一筆吧！</p>`;
             } else {
                 dayItems.forEach(item => {
-                    let typeColor = 'bg-blue-600'; let tagText = '景點';
-                    if(item.type === 'transport') { typeColor = 'bg-amber-500'; tagText = '交通'; }
-                    else if(item.type === 'hotel') { typeColor = 'bg-emerald-600'; tagText = '住宿'; }
-                    else if(item.type === 'restaurant') { typeColor = 'bg-rose-500'; tagText = '餐廳'; }
+                    // 柔和浪漫秋旅標籤配色
+                    let typeColor = 'bg-rose-50 text-rose-600 border border-rose-200'; let tagText = '🎯 景點';
+                    if(item.type === 'transport') { typeColor = 'bg-amber-50 text-amber-700 border border-amber-200'; tagText = '🚌 交通'; }
+                    else if(item.type === 'hotel') { typeColor = 'bg-emerald-50 text-emerald-700 border border-emerald-200'; tagText = '🏨 住宿'; }
+                    else if(item.type === 'restaurant') { typeColor = 'bg-orange-50 text-orange-700 border border-orange-200'; tagText = '🍱 美食'; }
 
                     let navHtml = '';
                     if (item.nav) {
                         let mapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(item.nav);
-                        navHtml = '<a href="' + mapUrl + '" target="_blank" onclick="event.stopPropagation();" class="self-center bg-gray-50 hover:bg-gray-100 p-2.5 rounded-full text-blue-600 transition-colors"><i class="fas fa-location-arrow text-base"></i></a>';
+                        navHtml = `<a href="${mapUrl}" target="_blank" onclick="event.stopPropagation();" class="self-center bg-rose-50/60 hover:bg-rose-100 p-2.5 rounded-xl text-rose-600 transition-colors shadow-2xs"><i class="fas fa-location-arrow text-sm"></i></a>`;
                     }
 
-                    // 醒目的朱紅色/深藍費用泡泡標籤
+                    // 醒目的楓紅/深海藍費用標籤
                     let costHtml = '';
                     if (item.cost && item.cost.trim() !== "") {
-                        costHtml = `<span class="text-[11px] font-bold text-white bg-[#BC3E34] px-2 py-0.5 rounded-full ml-auto shadow-xs"><i class="fas fa-yen-sign mr-0.5"></i>${item.cost}</span>`;
+                        costHtml = `<span class="text-[10px] font-bold text-white bg-gradient-to-r from-[#BE3144] to-[#D97706] px-2 py-0.5 rounded-full ml-auto shadow-2xs"><i class="fas fa-yen-sign mr-0.5"></i>${item.cost}</span>`;
                     }
 
                     html += `
-                        <div onclick="openEditModal('${item.id}')" class="bg-white rounded-xl p-4 border border-gray-100 hover:border-gray-300 shadow-xs relative overflow-hidden flex gap-3 text-left transition-all active:bg-gray-50 cursor-pointer">
+                        <div onclick="openEditModal('${item.id}')" class="bg-white rounded-2xl p-4 border border-slate-100 hover:border-amber-200 shadow-2xs relative overflow-hidden flex gap-3 text-left transition-all active:bg-slate-50 cursor-pointer">
                             <div class="flex flex-col items-center shrink-0">
-                                <span class="text-xs font-bold text-[#0F172A] bg-gray-100 px-2 py-0.5 rounded">${item.time}</span>
-                                <div class="w-0.5 bg-gray-200 grow my-2"></div>
+                                <span class="text-[11px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-lg">${item.time}</span>
+                                <div class="w-0.5 bg-gradient-to-b from-slate-200 to-transparent grow my-2"></div>
                             </div>
                             <div class="grow pr-1">
                                 <div class="flex justify-between items-center gap-1 mb-1.5">
-                                    <span class="text-xs font-bold text-white ${typeColor} px-2 py-0.5 rounded-md inline-block">${tagText}</span>
+                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-lg ${typeColor}">${tagText}</span>
                                     ${costHtml}
                                 </div>
-                                <h4 class="font-bold text-gray-800 text-sm mt-0.5">${item.title}</h4>
-                                <p class="text-xs text-gray-500 mt-1 leading-relaxed">${item.desc}</p>
+                                <h4 class="font-bold text-slate-800 text-xs mt-0.5">${item.title}</h4>
+                                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">${item.desc}</p>
                             </div>
                             <div class="flex flex-col justify-between items-end shrink-0 gap-3">
-                                <button onclick="event.stopPropagation(); deleteSchedule('${item.id}')" class="text-gray-300 hover:text-red-500 transition-colors text-xs p-1">
+                                <button onclick="event.stopPropagation(); deleteSchedule('${item.id}')" class="text-slate-300 hover:text-rose-500 transition-colors text-xs p-1">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                                 ${navHtml}
