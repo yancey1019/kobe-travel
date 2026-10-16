@@ -18,11 +18,11 @@
     <style>
         body {
             font-family: 'Noto Sans TC', sans-serif;
-            background-color: #FAF7F2; /* 溫潤秋天米白 */
+            background-color: #FAF7F2;
             -webkit-tap-highlight-color: transparent;
         }
         .active-tab {
-            color: #BE3144; /* 浪漫楓紅金 */
+            color: #BE3144;
             border-bottom: 3px solid #BE3144;
         }
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -31,7 +31,7 @@
 </head>
 <body class="pb-24 max-w-md mx-auto bg-[#FAF7F2] shadow-2xl min-h-screen relative text-slate-800">
 
-    <!-- 🔒 專屬登入遮罩 (第一次驗證後自動永久記住) -->
+    <!-- 🔒 專屬登入遮罩 -->
     <div id="auth-overlay" class="fixed inset-0 bg-[#0B192C]/90 backdrop-blur-md z-[100] flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-sm rounded-3xl p-7 shadow-2xl text-center border border-amber-100">
             <div class="w-14 h-14 bg-gradient-to-tr from-[#BE3144] to-[#F05941] text-white rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-lg shadow-rose-200">
@@ -43,11 +43,11 @@
             <div class="space-y-3.5 text-left">
                 <div>
                     <label class="text-[11px] font-bold text-slate-400 block mb-1">電子郵件</label>
-                    <input type="email" id="login-email" placeholder="example@gmail.com" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-rose-400 focus:ring-1 focus:ring-rose-400 transition-all">
+                    <input type="email" id="login-email" placeholder="example@gmail.com" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-rose-400">
                 </div>
                 <div>
                     <label class="text-[11px] font-bold text-slate-400 block mb-1">密碼</label>
-                    <input type="password" id="login-pass" placeholder="••••••••" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-rose-400 focus:ring-1 focus:ring-rose-400 transition-all">
+                    <input type="password" id="login-pass" placeholder="••••••••" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-rose-400">
                 </div>
                 <p id="login-error" class="text-xs text-rose-500 hidden text-center font-medium"></p>
                 <button onclick="handleLogin()" class="w-full bg-gradient-to-r from-[#BE3144] to-[#D97706] text-white p-3 rounded-xl font-bold text-sm shadow-md shadow-rose-200 active:scale-98 transition-transform mt-2">驗證身份並登入</button>
@@ -55,7 +55,7 @@
         </div>
     </div>
 
-    <!-- 頂部 App Bar (神戶港夜色 + 楓紅漸層標誌) -->
+    <!-- 頂部 App Bar -->
     <header class="bg-gradient-to-r from-[#0B192C] via-[#1E3E62] to-[#0B192C] text-white p-4 sticky top-0 z-50 shadow-md">
         <div class="flex justify-between items-center">
             <div>
@@ -84,10 +84,10 @@
                 <button onclick="switchDay(5)" id="day-btn-5" class="day-btn shrink-0 bg-white text-slate-600 border border-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold shadow-2xs">D5 (10/22)</button>
             </div>
 
-            <p class="text-[11px] text-amber-900/60 mb-3 text-center"><i class="fas fa-hand-pointer mr-1 text-amber-600"></i>直接「點擊行程卡片」即可修改內容與費用</p>
+            <p class="text-[11px] text-amber-900/60 mb-3 text-center"><i class="fas fa-hand-pointer mr-1 text-amber-600"></i>點擊卡片可編輯內容，含子行程的時間軸清單</p>
 
             <!-- 行程清單容器 -->
-            <div id="schedule-container" class="space-y-3"></div>
+            <div id="schedule-container" class="space-y-3.5"></div>
 
             <!-- 新增行程卡片 -->
             <div class="bg-white p-4 rounded-2xl border border-dashed border-amber-300/80 shadow-2xs mt-8 mb-4">
@@ -121,7 +121,7 @@
                     <input type="text" id="sch-title" placeholder="行程標題" class="w-full border border-slate-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-rose-400 font-semibold">
                 </div>
                 <div class="mb-3">
-                    <textarea id="sch-desc" rows="2" placeholder="詳細說明、推薦餐點或攻略備忘..." class="w-full border border-slate-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-rose-400"></textarea>
+                    <textarea id="sch-desc" rows="2" placeholder="詳細說明、推薦餐點或備忘..." class="w-full border border-slate-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-rose-400"></textarea>
                 </div>
                 <button onclick="addCustomSchedule()" class="w-full bg-gradient-to-r from-[#BE3144] to-[#D97706] text-white p-2.5 rounded-xl text-xs font-bold shadow-md shadow-rose-200 active:scale-98 transition-transform">推送到雙方手機行程表</button>
             </div>
@@ -129,7 +129,6 @@
 
         <!-- 記帳頁面 -->
         <div id="page-ledger" class="page-section hidden">
-            <!-- 記帳總覽卡片 (秋色漸層) -->
             <div class="bg-gradient-to-br from-[#0B192C] via-[#1E3E62] to-[#BE3144] text-white p-5 rounded-3xl shadow-xl mb-6 relative overflow-hidden">
                 <div class="absolute -right-4 -bottom-4 text-white/5 text-8xl"><i class="fas fa-coins"></i></div>
                 <p class="text-xs text-amber-200 tracking-wider uppercase font-medium">⚡ 雙人即時同步記帳 (JPY)</p>
@@ -143,7 +142,6 @@
                 </div>
             </div>
 
-            <!-- 新增記帳表單 -->
             <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm mb-6">
                 <h3 class="text-xs font-bold text-slate-700 mb-3 flex items-center gap-1.5">
                     <span class="w-5 h-5 rounded-md bg-rose-50 text-rose-600 flex items-center justify-center text-[10px]"><i class="fas fa-plus"></i></span>
@@ -164,7 +162,6 @@
                 </div>
             </div>
 
-            <!-- 消費清單 -->
             <div class="space-y-3">
                 <h3 class="text-xs font-bold text-slate-500 tracking-wider uppercase mb-1">消費紀錄清單</h3>
                 <div id="expense-list" class="space-y-2"></div>
@@ -221,7 +218,7 @@
 
     <!-- 編輯彈窗 Modal -->
     <div id="edit-modal" class="fixed inset-0 bg-slate-900/60 hidden items-center justify-center p-4 z-50 backdrop-blur-xs">
-        <div class="bg-white w-full max-w-sm rounded-3xl p-5 shadow-2xl animate-fade-in-up border border-slate-100">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-5 shadow-2xl animate-fade-in-up border border-slate-100 max-h-[90vh] overflow-y-auto no-scrollbar">
             <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-3.5">
                 <h3 class="font-bold text-slate-800 text-sm flex items-center gap-1.5">
                     <span class="w-6 h-6 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center text-xs"><i class="fas fa-edit"></i></span>
@@ -286,369 +283,4 @@
         <button onclick="navTo('schedule')" id="nav-schedule" class="flex flex-col items-center gap-0.5 text-xs font-bold active-tab w-full">
             <i class="fas fa-map-marked-alt text-lg mb-0.5"></i>行程
         </button>
-        <button onclick="navTo('ledger')" id="nav-ledger" class="flex flex-col items-center gap-0.5 text-xs font-medium text-slate-400 w-full">
-            <i class="fas fa-wallet text-lg mb-0.5"></i>雙人記帳
-        </button>
-        <button onclick="navTo('info')" id="nav-info" class="flex flex-col items-center gap-0.5 text-xs font-medium text-slate-400 w-full">
-            <i class="fas fa-info-circle text-lg mb-0.5"></i>重要資訊
-        </button>
-    </nav>
-
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDc9xXYYTCpOzKk_N03dQZCfO2OkPOn-U8",
-            authDomain: "japan-travel-202606.firebaseapp.com",
-            databaseURL: "https://japan-travel-202606-default-rtdb.firebaseio.com",
-            projectId: "japan-travel-202606",
-            storageBucket: "japan-travel-202606.firebasestorage.app",
-            messagingSenderId: "688622010243",
-            appId: "1:688622010243:web:7371df5d2f301f6e4bc0b6"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const database = firebase.database();
-        let expenseRef, scheduleRef;
-
-        // 登入狀態監聽 (保持登入)
-        auth.onAuthStateChanged((user) => {
-            const overlay = document.getElementById('auth-overlay');
-            if (user) {
-                overlay.classList.add('hidden');
-                initDatabaseListeners();
-            } else {
-                overlay.classList.remove('hidden');
-            }
-        });
-
-        function handleLogin() {
-            const email = document.getElementById('login-email').value.trim();
-            const pass = document.getElementById('login-pass').value.trim();
-            const errEl = document.getElementById('login-error');
-
-            if (!email || !pass) {
-                errEl.innerText = "請輸入 Email 和密碼！";
-                errEl.classList.remove('hidden');
-                return;
-            }
-
-            auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-                .then(() => auth.signInWithEmailAndPassword(email, pass))
-                .catch((error) => {
-                    errEl.innerText = "登入失敗：Email 或密碼錯誤！";
-                    errEl.classList.remove('hidden');
-                });
-        }
-
-        // 神戶 2 版最新行程資料庫 (包含桌球店 & 千姬茶屋等最新微調)
-        const defaultSchedules = [
-            // D1 (10/18 週日)
-            { day: 1, time: "06:50-10:30", type: "transport", title: "桃園機場 T1 → 神戶機場 T2", desc: "星宇航空 JX834，抵達後前往 1 航廈 2 樓搭乘 Port Liner。", nav: "神戶機場", cost: "" },
-            { day: 1, time: "11:30-11:48", type: "transport", title: "Port Liner：神戶空港站 → 三宮站", desc: "搭乘神戶新交通，直達三宮市區。", nav: "神戶空港站", cost: "340日幣" },
-            { day: 1, time: "12:00-13:00", type: "restaurant", title: "飯店寄放行李 ＆ 午餐：天婦羅 Makino", desc: "至 Comfort Hotel ERA Kobe Sannomiya 寄行李。午餐推薦 Center Plaza B1F 天婦羅まきの(必點炸雞蛋/玉子天)！", nav: "まきの センタープラザ店", cost: "" },
-            { day: 1, time: "13:00-13:16", type: "spot", title: "三宮中心商店街 & 百貨漫遊", desc: "逛神戶0101、神戶阪急(1F有藍瓶咖啡)、神戶M-int等。", nav: "三宮中心商店街", cost: "" },
-            { day: 1, time: "13:16-13:20", type: "transport", title: "三宮站 → 神戶站 (JR神戶線)", desc: "三宮站 3 月台搭 JR 神戶線(須磨行) ➔ 神戶站 4 月台。", nav: "神戶站", cost: "150日幣" },
-            { day: 1, time: "13:30-14:35", type: "spot", title: "高速神戶站地下街：市內最大乒乓球館 🏓", desc: "出神戶站往北步行約 2 分鐘至高速神戶站地下街，探索市內最大的乒乓球館與桌球店(營業至20:00)！", nav: "高速神戶站", cost: "" },
-            { day: 1, time: "14:48-14:51", type: "transport", title: "神戶站 → 三宮站 (JR神戶線新快速)", desc: "神戶站 2 月台搭 JR 新快速(敦賀行)返回三宮站 1 月台。", nav: "三宮站", cost: "150日幣" },
-            { day: 1, time: "15:00-15:30", type: "hotel", title: "Comfort Hotel ERA Kobe Sannomiya 入住", desc: "辦理 CHECK IN，稍作歇息準備傍晚看夜景。", nav: "Comfort Hotel ERA Kobe Sannomiya", cost: "" },
-            { day: 1, time: "16:00-17:00", type: "transport", title: "三宮搭 18 號公車 → 摩耶纜車站", desc: "於神戶阪急對面「三宮駅前」搭乘 18 號公車(16:15或16:45班次)，約 25 分抵達「摩耶ケーブル下」。", nav: "三宮駅前 公車站", cost: "230日幣" },
-            { day: 1, time: "17:00-18:00", type: "spot", title: "摩耶山掬星台觀賞「千萬夜景」✨", desc: "搭乘兩段纜車(登山車+空中纜車)至掬星台，飽覽日本三大夜景！(纜車來回 1,560 日幣)", nav: "摩耶山 掬星台", cost: "1560日幣" },
-            { day: 1, time: "18:00-18:30", type: "transport", title: "搭纜車返回地面纜車站", desc: "搭乘兩段纜車回到摩耶ケーブル下。", nav: "", cost: "" },
-            { day: 1, time: "18:30-19:30", type: "transport", title: "搭 18 號公車返回三宮站", desc: "公車時刻約 18:20 與 18:50 各一班，約 25 分鐘返回三宮。", nav: "", cost: "230日幣" },
-            { day: 1, time: "19:30-21:00", type: "restaurant", title: "晚餐 & 逛三宮地下街、商店街、百貨", desc: "在熱鬧的三宮市區享用美味晚餐與逛街。", nav: "三宮站", cost: "" },
-
-            // D2 (10/19 週一) 🎂 寶貝生日快樂
-            { day: 2, time: "08:00-09:00", type: "restaurant", title: "出門悠閒享用早餐 🎂", desc: "祝親愛的寶貝生日快樂！開啟滿滿幸福與浪漫的一天。", nav: "", cost: "" },
-            { day: 2, time: "09:31-10:01", type: "transport", title: "神戶三宮 → 須磨浦公園站", desc: "神戶三宮(阪急/高速)1、2月台 ➔ 高速神戶站4月台(往山陽姬路) ➔ 抵達須磨浦公園站。", nav: "須磨浦公園車站", cost: "400日幣" },
-            { day: 2, time: "10:05-14:30", type: "spot", title: "須磨浦山上遊樂園 (搭纜車A路線)", desc: "搭乘空中纜車、爬坡軌道車、旋轉展望閣與觀光纜車，環山俯瞰壯闊明石海景！(來回票價 2,100 日幣)", nav: "須磨浦山上遊樂園", cost: "2100日幣" },
-            { day: 2, time: "14:59-15:26", type: "transport", title: "須磨浦公園站 → 元町站", desc: "搭乘山陽電鐵本線特急(大阪梅田行)。", nav: "元町車站", cost: "400日幣" },
-            { day: 2, time: "15:30-18:00", type: "spot", title: "元町商店街 & 南京町中華街漫步", desc: "伴手禮：神戶風月堂本店法蘭酥、Frantz魔法瓶布丁、Morozoff鑽石巧克力。元町老字號「珉珉」招牌元町風餃子、天津飯。一路散步往美利堅公園。", nav: "元町商店街", cost: "" },
-            { day: 2, time: "18:30-18:50", type: "spot", title: "美利堅公園：浪漫璀璨煙火秀 🎆", desc: "海港夜空煙火綻放，最浪漫的生日瞬間！", nav: "美利堅公園", cost: "" },
-            { day: 2, time: "19:00-20:00", type: "restaurant", title: "生日浪漫晚餐慶祝", desc: "在神戶港邊或景觀餐廳享用生日晚餐。", nav: "", cost: "" },
-            { day: 2, time: "20:00-21:00", type: "spot", title: "神戶港塔展望層看夜景", desc: "欣賞神戶港迷人夜色(門票 1,200 日幣)。PORT TERRACE 餐廳可品嚐招牌神戶塔造型布丁！", nav: "神戶港塔", cost: "1200日幣" },
-            { day: 2, time: "21:00-22:00", type: "hotel", title: "買生日蛋糕 ＆ 散步回飯店切蛋糕慶生", desc: "沿途選購美味蛋糕，散步回飯店共度溫馨慶生之夜 🎂！", nav: "Comfort Hotel ERA Kobe Sannomiya", cost: "" },
-
-            // D3 (10/20 週二)
-            { day: 3, time: "08:00-09:00", type: "restaurant", title: "出門享用活力早餐", desc: "今天啟程前往世界遺產姬路城與舞子海峽！", nav: "", cost: "" },
-            { day: 3, time: "09:00-09:15", type: "transport", title: "購買「三宮姬路一日券」", desc: "於阪神神戶三宮站「站長室」出示票券名稱圖片購買(¥1,600)。當日電車全包無限次搭乘！", nav: "阪神神戶三宮站", cost: "1600日幣" },
-            { day: 3, time: "09:15-10:22", type: "transport", title: "神戶三宮站 → 山陽姬路站", desc: "搭乘阪神本線直通特急(山陽姬路行)3月台，使用一日券。", nav: "山陽姬路站", cost: "一日券" },
-            { day: 3, time: "10:40-12:40", type: "spot", title: "參觀國寶：姬路城 (白鷺城)", desc: "日本第一名城、世界文化遺產！(門票 1,000 日幣，開放至 17:00)", nav: "姬路城", cost: "1000日幣" },
-            { day: 3, time: "12:40-15:00", type: "restaurant", title: "姬路商店街午餐：推薦千姬茶屋/穴子魚", desc: "逛御幸通、二階町商店街。特別推薦：Egret Himeji 1F「千姬茶屋」招牌吻仔魚丼飯、大滿足星鰻丼套餐(11:00-14:30)；或炭燒穴子やま義、赤心本店炸豬排、鯛燒本舖！", nav: "千姫茶屋", cost: "" },
-            { day: 3, time: "15:12-15:46", type: "transport", title: "山陽姬路站 → 山陽明石站", desc: "搭乘山陽電鐵直通特急(大阪梅田行)3或4月台，使用一日券。", nav: "山陽明石站", cost: "一日券" },
-            { day: 3, time: "15:55-16:35", type: "spot", title: "明石魚棚商店街 (400年老街)", desc: "南口步行 5 分鐘。必吃兵庫名物「明石燒」！名店推薦「あかし多幸(招牌玉子燒)」或「よし川」。", nav: "魚之棚商店街", cost: "" },
-            { day: 3, time: "16:47-16:51", type: "transport", title: "山陽明石站 → 舞子公園站", desc: "搭乘山陽電鐵直通特急(大阪梅田行)，使用一日券。", nav: "舞子公園站", cost: "一日券" },
-            { day: 3, time: "17:00-18:00", type: "spot", title: "舞子海上步道 & 明石海峽大橋日落 🌅", desc: "欣賞明石海峽壯觀日落景象(預計 17:21)。漫步舞子海上步道(門票 250 日幣)。提早到可多逛橋的科學館(門票 500 日幣)。", nav: "舞子海上步道", cost: "250日幣" },
-            { day: 3, time: "18:11-18:36", type: "transport", title: "舞子公園站 → 元町站", desc: "搭乘山陽直通特急(大阪梅田行)返回元町站，使用一日券。", nav: "元町站", cost: "一日券" },
-            { day: 3, time: "18:45-21:00", type: "restaurant", title: "晚餐：明石燒司 ＆ 逛三宮地下街", desc: "品嚐口感更嫩滑的「明石燒司」(18:00起營業)，逛商店街採購。", nav: "明石燒 司", cost: "" },
-
-            // D4 (10/21 週三)
-            { day: 4, time: "08:30-09:30", type: "restaurant", title: "出門悠閒享用早餐", desc: "今天前往須磨海洋世界看可愛的虎鯨與海豚！", nav: "", cost: "" },
-            { day: 4, time: "09:39-09:52", type: "transport", title: "三宮站 → 須磨海濱公園站", desc: "搭乘 JR 神戶線(西明石行) 3 月台。", nav: "須磨海濱公園站", cost: "200日幣" },
-            { day: 4, time: "10:00-14:00", type: "spot", title: "須磨海洋世界 & 館內午餐 🐬", desc: "西日本唯一虎鯨展示區！震撼力十足的虎鯨與海豚精彩展演(門票 3,100 日幣)。", nav: "須磨海洋世界", cost: "3100日幣" },
-            { day: 4, time: "14:14-14:41", type: "transport", title: "須磨海濱公園站 → 新神戶站", desc: "JR神戶線至新長田站(150日幣) ➔ 轉神戶市營地下鐵至新神戶站(280日幣)。", nav: "新神戶站", cost: "430日幣" },
-            { day: 4, time: "14:50-17:30", type: "spot", title: "北野異人館街浪漫散策", desc: "充滿歐風異國情調的優雅街道，一路往三宮方向逛回去。", nav: "北野異人館街", cost: "" },
-            { day: 4, time: "17:30-18:30", type: "spot", title: "神戶市役所 24F 展望台 (免費展望)", desc: "居高臨下遠眺神戶市景與港灣景色，免費開放參觀至 22:00。", nav: "神戶市役所 24樓展望台", cost: "" },
-            { day: 4, time: "18:30-21:00", type: "restaurant", title: "晚餐 & 百貨伴手禮最後大採購", desc: "三宮地下街、商店街大採購與美食巡禮。", nav: "三宮站", cost: "" },
-
-            // D5 (10/22 週四)
-            { day: 5, time: "08:30-08:50", type: "hotel", title: "飯店 CHECK OUT", desc: "Comfort Hotel ERA Kobe 辦理退房，準備前往機場。", nav: "Comfort Hotel ERA Kobe Sannomiya", cost: "" },
-            { day: 5, time: "09:04-09:24", type: "transport", title: "Port Liner：三宮站 → 神戶空港站", desc: "搭乘神戶新交通直達神戶機場 1 航廈 2 樓。", nav: "神戶空港站", cost: "340日幣" },
-            { day: 5, time: "09:30-11:40", type: "spot", title: "機場報到 & 享用早餐", desc: "前往神戶機場 2 航廈星宇航空櫃檯報到出境，採購最後伴手禮。", nav: "神戶機場 2航廈", cost: "" },
-            { day: 5, time: "11:40-13:40", type: "transport", title: "神戶機場 T2 → 桃園機場 T1 (JX835)", desc: "搭乘星宇航空返台，滿載慶生與秋旅的美好回憶平安歸國！", nav: "桃園國際機場", cost: "" }
-        ];
-
-        let globalSchedules = [];
-        let currentActiveDay = 1;
-
-        function initDatabaseListeners() {
-            expenseRef = database.ref('kobe_expenses');
-            scheduleRef = database.ref('kobe_schedules');
-
-            // 確保資料庫有預載最新的 2 版行程
-            scheduleRef.once('value', (snapshot) => {
-                if (!snapshot.exists()) {
-                    defaultSchedules.forEach(item => scheduleRef.push(item));
-                }
-            });
-
-            scheduleRef.on('value', (snapshot) => {
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-                    globalSchedules = Object.keys(data).map(key => ({ id: key, ...data[key] }));
-                } else {
-                    globalSchedules = [];
-                }
-                renderScheduleCards();
-            });
-
-            expenseRef.on('value', (snapshot) => {
-                const listContainer = document.getElementById('expense-list');
-                let total = 0; let html = '';
-
-                if(snapshot.exists()) {
-                    const data = snapshot.val();
-                    const items = Object.keys(data).map(key => ({ id: key, ...data[key] })).reverse();
-
-                    items.forEach(item => {
-                        total += item.amount;
-                        html += `
-                            <div class="bg-white px-4 py-3 rounded-2xl border border-slate-100 shadow-2xs flex justify-between items-center">
-                                <div class="flex items-center gap-3">
-                                    <span class="text-xl">${item.category === '交通' ? '🚌' : item.category === '美食' ? '🍱' : item.category === '購物' ? '🛍️' : '🎟️'}</span>
-                                    <div class="text-left">
-                                        <p class="text-xs font-bold text-slate-800">${item.title}</p>
-                                        <p class="text-[10px] text-slate-400">${new Date(item.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-2.5">
-                                    <span class="text-sm font-extrabold text-[#BE3144]">¥${item.amount.toLocaleString()}</span>
-                                    <button onclick="deleteExpense('${item.id}')" class="text-slate-300 hover:text-rose-500 transition-colors text-xs p-1"><i class="fas fa-trash-alt"></i></button>
-                                </div>
-                            </div>
-                        `;
-                    });
-                } else {
-                    html = `<p class="text-xs text-slate-400 text-center py-6">目前沒有開銷紀錄，隨時開始記帳吧！</p>`;
-                }
-
-                listContainer.innerHTML = html;
-                document.getElementById('total-expense').innerText = `¥${total.toLocaleString()}`;
-                let progress = (total / 7000) * 100;
-                if(progress > 100) progress = 100;
-                document.getElementById('budget-progress').style.width = `${progress}%`;
-            });
-        }
-
-        function navTo(pageId) {
-            document.querySelectorAll('.page-section').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`page-${pageId}`).classList.remove('hidden');
-            document.querySelectorAll('nav button').forEach(el => {
-                el.classList.remove('active-tab');
-                el.classList.add('text-slate-400');
-            });
-            const activeBtn = document.getElementById(`nav-${pageId}`);
-            activeBtn.classList.add('active-tab');
-            activeBtn.classList.remove('text-slate-400');
-        }
-
-        function switchDay(dayNum) {
-            currentActiveDay = dayNum;
-            document.querySelectorAll('.day-btn').forEach(btn => {
-                btn.className = "day-btn shrink-0 bg-white text-slate-600 border border-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold shadow-2xs";
-            });
-            const activeBtn = document.getElementById(`day-btn-${dayNum}`);
-            if (activeBtn) {
-                activeBtn.className = "day-btn shrink-0 bg-gradient-to-r from-[#BE3144] to-[#D97706] text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow-md shadow-rose-200";
-            }
-            renderScheduleCards();
-        }
-
-        function renderScheduleCards() {
-            const dayNum = currentActiveDay;
-            const dayItems = globalSchedules.filter(item => item.day == dayNum);
-            dayItems.sort((a, b) => a.time.localeCompare(b.time));
-
-            let locText = "神戶行程"; let weatherText = "☀️ 18°C ~ 23°C";
-            if(dayNum == 1) { locText = "三宮 · 高速神戶 · 摩耶山"; weatherText = "晴天 18°C ~ 23°C"; }
-            else if(dayNum == 2) { locText = "須磨浦 · 神戶港 (🎂慶生)"; weatherText = "晴朗 19°C ~ 24°C"; }
-            else if(dayNum == 3) { locText = "姬路城 · 魚棚 · 明石海峽日落"; weatherText = "秋高氣爽 18°C ~ 23°C"; }
-            else if(dayNum == 4) { locText = "須磨海洋世界 · 北野異人館"; weatherText = "晴時多雲 19°C ~ 24°C"; }
-            else if(dayNum == 5) { locText = "神戶機場返台"; weatherText = "多雲 17°C ~ 22°C"; }
-
-            document.getElementById('weather-badge').innerHTML = `<i class="fas fa-sparkles text-amber-300"></i> <span>${locText}</span>`;
-
-            let html = '';
-            if (dayItems.length === 0) {
-                html = `<p class="text-xs text-slate-400 text-center py-12 border border-dashed border-slate-200 rounded-2xl bg-white/50">今天目前沒有安排行程，在下方新增一筆吧！</p>`;
-            } else {
-                dayItems.forEach(item => {
-                    // 柔和浪漫秋旅標籤配色
-                    let typeColor = 'bg-rose-50 text-rose-600 border border-rose-200'; let tagText = '🎯 景點';
-                    if(item.type === 'transport') { typeColor = 'bg-amber-50 text-amber-700 border border-amber-200'; tagText = '🚌 交通'; }
-                    else if(item.type === 'hotel') { typeColor = 'bg-emerald-50 text-emerald-700 border border-emerald-200'; tagText = '🏨 住宿'; }
-                    else if(item.type === 'restaurant') { typeColor = 'bg-orange-50 text-orange-700 border border-orange-200'; tagText = '🍱 美食'; }
-
-                    let navHtml = '';
-                    if (item.nav) {
-                        let mapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(item.nav);
-                        navHtml = `<a href="${mapUrl}" target="_blank" onclick="event.stopPropagation();" class="self-center bg-rose-50/60 hover:bg-rose-100 p-2.5 rounded-xl text-rose-600 transition-colors shadow-2xs"><i class="fas fa-location-arrow text-sm"></i></a>`;
-                    }
-
-                    // 醒目的楓紅/深海藍費用標籤
-                    let costHtml = '';
-                    if (item.cost && item.cost.trim() !== "") {
-                        costHtml = `<span class="text-[10px] font-bold text-white bg-gradient-to-r from-[#BE3144] to-[#D97706] px-2 py-0.5 rounded-full ml-auto shadow-2xs"><i class="fas fa-yen-sign mr-0.5"></i>${item.cost}</span>`;
-                    }
-
-                    html += `
-                        <div onclick="openEditModal('${item.id}')" class="bg-white rounded-2xl p-4 border border-slate-100 hover:border-amber-200 shadow-2xs relative overflow-hidden flex gap-3 text-left transition-all active:bg-slate-50 cursor-pointer">
-                            <div class="flex flex-col items-center shrink-0">
-                                <span class="text-[11px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-lg">${item.time}</span>
-                                <div class="w-0.5 bg-gradient-to-b from-slate-200 to-transparent grow my-2"></div>
-                            </div>
-                            <div class="grow pr-1">
-                                <div class="flex justify-between items-center gap-1 mb-1.5">
-                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-lg ${typeColor}">${tagText}</span>
-                                    ${costHtml}
-                                </div>
-                                <h4 class="font-bold text-slate-800 text-xs mt-0.5">${item.title}</h4>
-                                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">${item.desc}</p>
-                            </div>
-                            <div class="flex flex-col justify-between items-end shrink-0 gap-3">
-                                <button onclick="event.stopPropagation(); deleteSchedule('${item.id}')" class="text-slate-300 hover:text-rose-500 transition-colors text-xs p-1">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                                ${navHtml}
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-            document.getElementById('schedule-container').innerHTML = html;
-        }
-
-        function openEditModal(key) {
-            const item = globalSchedules.find(sch => sch.id === key);
-            if (!item) return;
-
-            document.getElementById('edit-key').value = key;
-            document.getElementById('edit-day').value = item.day;
-            document.getElementById('edit-time').value = item.time;
-            document.getElementById('edit-type').value = item.type;
-            document.getElementById('edit-cost').value = item.cost || '';
-            document.getElementById('edit-nav').value = item.nav || '';
-            document.getElementById('edit-title').value = item.title;
-            document.getElementById('edit-desc').value = item.desc || '';
-
-            const modal = document.getElementById('edit-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        function closeEditModal() {
-            const modal = document.getElementById('edit-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        function saveScheduleUpdate() {
-            const key = document.getElementById('edit-key').value;
-            const day = parseInt(document.getElementById('edit-day').value);
-            const time = document.getElementById('edit-time').value.trim() || "全天";
-            const type = document.getElementById('edit-type').value;
-            const cost = document.getElementById('edit-cost').value.trim();
-            const nav = document.getElementById('edit-nav').value.trim();
-            const title = document.getElementById('edit-title').value.trim();
-            const desc = document.getElementById('edit-desc').value.trim();
-
-            if (!title) { alert('行程標題不能為空！'); return; }
-
-            database.ref(`kobe_schedules/${key}`).update({
-                day: day, time: time, type: type, cost: cost, nav: nav, title: title, desc: desc
-            }, (error) => {
-                if (!error) {
-                    closeEditModal();
-                    if (day !== currentActiveDay) { switchDay(day); }
-                } else {
-                    alert('更新失敗！');
-                }
-            });
-        }
-
-        function addCustomSchedule() {
-            const day = parseInt(document.getElementById('sch-day').value);
-            const time = document.getElementById('sch-time').value.trim() || "全天";
-            const type = document.getElementById('sch-type').value;
-            const cost = document.getElementById('sch-cost').value.trim();
-            const nav = document.getElementById('sch-nav').value.trim();
-            const title = document.getElementById('sch-title').value.trim();
-            const desc = document.getElementById('sch-desc').value.trim();
-
-            if (!title) { alert('請輸入行程標題！'); return; }
-
-            scheduleRef.push({
-                day: day, time: time, type: type, cost: cost, nav: nav, title: title, desc: desc
-            });
-
-            document.getElementById('sch-time').value = '';
-            document.getElementById('sch-cost').value = '';
-            document.getElementById('sch-nav').value = '';
-            document.getElementById('sch-title').value = '';
-            document.getElementById('sch-desc').value = '';
-            
-            switchDay(day);
-        }
-
-        function deleteSchedule(key) {
-            if (confirm('確定要刪除這個行程卡片嗎？')) {
-                database.ref(`kobe_schedules/${key}`).remove();
-            }
-        }
-
-        function addExpense() {
-            const title = document.getElementById('exp-title').value.trim();
-            const amount = parseInt(document.getElementById('exp-amount').value);
-            const category = document.getElementById('exp-category').value;
-
-            if(!title || isNaN(amount) || amount <= 0) { alert('請輸入項目名稱與日幣金額！'); return; }
-
-            expenseRef.push({ title: title, amount: amount, category: category, timestamp: Date.now() });
-            document.getElementById('exp-title').value = '';
-            document.getElementById('exp-amount').value = '';
-        }
-
-        function deleteExpense(key) {
-            if(confirm('確定要刪除這筆開銷嗎？')) {
-                database.ref(`kobe_expenses/${key}`).remove();
-            }
-        }
-
-        switchDay(1);
-    </script>
-</body>
-</html>
+        <button onclick="navTo('ledger')" id="nav-ledger" class="flex flex-col items-center gap
