@@ -190,11 +190,32 @@
             max-height: 90vh;
             overflow-y: auto;
         }
+        /* 記帳分類統計項目條 */
+        .cat-stat-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            margin-bottom: 6px;
+        }
+        .cat-progress-bg {
+            background: #f1f5f9;
+            height: 6px;
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-top: 2px;
+            margin-bottom: 8px;
+        }
+        .cat-progress-bar {
+            height: 100%;
+            border-radius: 9999px;
+            transition: width 0.3s ease;
+        }
     </style>
 </head>
 <body>
 
-    <!-- 🔒 登入遮罩 (加入強制開門按鈕，絕不再卡死) -->
+    <!-- 🔒 專屬登入遮罩 -->
     <div id="auth-overlay">
         <div class="login-box">
             <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #BE3144, #F05941); border-radius: 14px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
@@ -212,7 +233,6 @@
 
                 <p id="login-error" style="color: #ef4444; font-size: 11px; text-align: center; margin-bottom: 8px; display: none;"></p>
                 <button type="button" id="btn-login-submit" class="btn-submit" onclick="executeLogin()">驗證身份並登入</button>
-                <button type="button" onclick="forceUnlock()" style="width: 100%; margin-top: 8px; background: none; border: none; color: #94a3b8; font-size: 11px; cursor: pointer; text-decoration: underline;">直接進入行程 (若卡住點此)</button>
             </div>
         </div>
     </div>
@@ -229,6 +249,7 @@
     </header>
 
     <main style="padding: 16px;">
+        <!-- 行程頁面 -->
         <div id="page-schedule">
             <div class="day-bar">
                 <button onclick="switchDay(1)" id="day-btn-1" class="day-btn active">D1 (10/18)</button>
@@ -239,7 +260,7 @@
             </div>
 
             <p style="font-size: 11px; color: #92400e; text-align: center; margin: 10px 0;">
-                <i class="fas fa-hand-pointer mr-1"></i>點擊卡片可編輯修改內容與費用
+                <i class="fas fa-hand-pointer mr-1"></i>點擊卡片即可編輯修改內容與費用
             </p>
 
             <div id="schedule-container"></div>
@@ -272,8 +293,10 @@
             </div>
         </div>
 
+        <!-- 記帳頁面 -->
         <div id="page-ledger" style="display: none;">
-            <div style="background: linear-gradient(135deg, #0B192C, #1E3E62, #BE3144); color: white; padding: 20px; border-radius: 20px; margin-bottom: 16px;">
+            <!-- 總花費看板 -->
+            <div style="background: linear-gradient(135deg, #0B192C, #1E3E62, #BE3144); color: white; padding: 20px; border-radius: 20px; margin-bottom: 14px;">
                 <p style="font-size: 11px; color: #fde68a;">⚡ 雙人即時同步記帳 (JPY)</p>
                 <h2 id="total-expense" style="font-size: 28px; font-weight: bold; margin-top: 4px;">¥0</h2>
                 <div style="background: rgba(255,255,255,0.2); height: 8px; border-radius: 9999px; margin-top: 12px; overflow: hidden;">
@@ -281,22 +304,37 @@
                 </div>
                 <div style="display: flex; justify-content: space-between; font-size: 10px; color: #cbd5e1; margin-top: 6px;">
                     <span>累計總花費</span>
-                    <span>基礎交通預備金: ¥7,000</span>
+                    <span>基礎交通預備金: ¥7,000[cite: 1]</span>
                 </div>
             </div>
 
+            <!-- 各類花費佔比面板 (7 大類統計) -->
+            <div style="background: white; padding: 14px 16px; border-radius: 16px; border: 1px solid #e2e8f0; margin-bottom: 14px;">
+                <h3 style="font-size: 12px; font-weight: bold; margin-bottom: 12px; color: #1e293b; display: flex; align-items: center; justify-content: space-between;">
+                    <span><i class="fas fa-chart-pie" style="color: #BE3144; margin-right: 6px;"></i>各類開銷佔比分析</span>
+                    <span id="stat-count-badge" style="font-size: 10px; font-weight: normal; color: #64748b;">共 0 筆</span>
+                </h3>
+                <div id="category-stats-container">
+                    <!-- 動態渲染 7 大分類比例 -->
+                </div>
+            </div>
+
+            <!-- 新增記帳表單 (7 大分類下拉) -->
             <div style="background: white; padding: 14px; border-radius: 16px; border: 1px solid #e2e8f0; margin-bottom: 16px;">
                 <h3 style="font-size: 12px; font-weight: bold; margin-bottom: 10px; color: #334155;">➕ 新增一筆開銷</h3>
                 <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-                    <input type="text" id="exp-title" placeholder="項目" class="login-input" style="margin: 0; width: 50%;">
+                    <input type="text" id="exp-title" placeholder="項目 (如: 明石燒)" class="login-input" style="margin: 0; width: 50%;">
                     <input type="number" id="exp-amount" placeholder="金額 (JPY)" class="login-input" style="margin: 0; width: 50%;">
                 </div>
                 <div style="display: flex; gap: 8px;">
                     <select id="exp-category" class="login-input" style="margin: 0; width: 50%;">
                         <option value="交通">🚌 交通</option>
+                        <option value="門票/觀光">🎟️ 門票/觀光</option>
                         <option value="美食">🍱 美食</option>
-                        <option value="購物">🛍️ 購物</option>
-                        <option value="門票">🎟️ 門票/其他</option>
+                        <option value="伴手禮">🎁 伴手禮</option>
+                        <option value="藥妝">💊 藥妝</option>
+                        <option value="服飾">👗 服飾</option>
+                        <option value="其他">📦 其他</option>
                     </select>
                     <button type="button" onclick="addExpense()" class="btn-submit" style="width: 50%; padding: 8px;">儲存至雲端</button>
                 </div>
@@ -305,21 +343,22 @@
             <div id="expense-list"></div>
         </div>
 
+        <!-- 資訊頁面 -->
         <div id="page-info" style="display: none;">
             <div class="card">
                 <h3 style="font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #1e3a8a;"><i class="fas fa-plane"></i> 星宇航空</h3>
                 <div style="font-size: 11px; line-height: 1.8; color: #475569;">
-                    <p>去程 JX834 (10/18): 06:50 桃園 ➔ 10:30 神戶</p>
-                    <p>回程 JX835 (10/22): 11:40 神戶 ➔ 13:40 桃園</p>
+                    <p>去程 JX834 (10/18): 06:50 桃園 ➔ 10:30 神戶[cite: 1]</p>
+                    <p>回程 JX835 (10/22): 11:40 神戶 ➔ 13:40 桃園[cite: 1, 4]</p>
                 </div>
             </div>
             <div class="card">
                 <h3 style="font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #065f46;"><i class="fas fa-hotel"></i> Comfort Hotel ERA Kobe Sannomiya</h3>
-                <p style="font-size: 11px; color: #64748b;">10/18~10/22 連住 4 晚，位於三宮精華商圈。</p>
+                <p style="font-size: 11px; color: #64748b;">10/18~10/22 連住 4 晚，位於三宮精華商圈[cite: 1, 3, 4]。</p>
             </div>
             <div class="card">
                 <h3 style="font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #92400e;"><i class="fas fa-ticket-alt"></i> 交通票券</h3>
-                <p style="font-size: 11px; color: #475569;">D3 阪神三宮站購買「三宮姬路一日券 (¥1,600)」，當日可無限搭乘阪神/神戶高速/山陽電車全線。</p>
+                <p style="font-size: 11px; color: #475569;">D3 阪神三宮站購買「三宮姬路一日券 (¥1,600)」，當日可無限搭乘阪神/神戶高速/山陽電車全線[cite: 2]。</p>
             </div>
         </div>
     </main>
@@ -337,11 +376,11 @@
                 <div style="width: 50%;">
                     <label style="font-size: 10px; font-weight: bold; color: #64748b;">天數</label>
                     <select id="edit-day" class="login-input">
-                        <option value="1">D1 (10/18)</option>
-                        <option value="2">D2 (10/19)🎂</option>
-                        <option value="3">D3 (10/20)</option>
-                        <option value="4">D4 (10/21)</option>
-                        <option value="5">D5 (10/22)</option>
+                        <option value="1">D1 (10/18)[cite: 1]</option>
+                        <option value="2">D2 (10/19)🎂[cite: 1]</option>
+                        <option value="3">D3 (10/20)[cite: 2]</option>
+                        <option value="4">D4 (10/21)[cite: 3]</option>
+                        <option value="5">D5 (10/22)[cite: 3, 4]</option>
                     </select>
                 </div>
                 <div style="width: 50%;">
@@ -386,292 +425,4 @@
     <nav>
         <button type="button" onclick="navTo('schedule')" id="nav-schedule" class="active">
             <i class="fas fa-map-marked-alt" style="font-size: 18px; margin-bottom: 3px;"></i>行程
-        </button>
-        <button type="button" onclick="navTo('ledger')" id="nav-ledger">
-            <i class="fas fa-wallet" style="font-size: 18px; margin-bottom: 3px;"></i>雙人記帳
-        </button>
-        <button type="button" onclick="navTo('info')" id="nav-info">
-            <i class="fas fa-info-circle" style="font-size: 18px; margin-bottom: 3px;"></i>重要資訊
-        </button>
-    </nav>
-
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDc9xXYYTCpOzKk_N03dQZCfO2OkPOn-U8",
-            authDomain: "japan-travel-202606.firebaseapp.com",
-            databaseURL: "https://japan-travel-202606-default-rtdb.firebaseio.com",
-            projectId: "japan-travel-202606",
-            storageBucket: "japan-travel-202606.firebasestorage.app",
-            messagingSenderId: "688622010243",
-            appId: "1:688622010243:web:7371df5d2f301f6e4bc0b6"
-        };
-
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-
-        const auth = firebase.auth();
-        const database = firebase.database();
-        let globalSchedules = [];
-        let currentActiveDay = 1;
-
-        auth.onAuthStateChanged(function(user) {
-            var overlay = document.getElementById('auth-overlay');
-            if (user) {
-                if (overlay) overlay.style.display = 'none';
-                initDatabase();
-            } else {
-                if (overlay) overlay.style.display = 'flex';
-            }
-        });
-
-        function executeLogin() {
-            var email = document.getElementById('login-email').value.trim();
-            var pass = document.getElementById('login-pass').value.trim();
-            var errEl = document.getElementById('login-error');
-            var btnEl = document.getElementById('btn-login-submit');
-
-            if (!email || !pass) {
-                errEl.innerText = "請輸入 Email 和密碼！";
-                errEl.style.display = 'block';
-                return;
-            }
-
-            btnEl.disabled = true;
-            btnEl.innerText = "驗證中...";
-            errEl.style.display = 'none';
-
-            auth.signInWithEmailAndPassword(email, pass)
-                .then(function() {
-                    document.getElementById('auth-overlay').style.display = 'none';
-                })
-                .catch(function(error) {
-                    btnEl.disabled = false;
-                    btnEl.innerText = "驗證身份並登入";
-                    errEl.innerText = "登入失敗：" + error.message;
-                    errEl.style.display = 'block';
-                });
-        }
-
-        // 強制開門函式：點擊直接隱藏遮罩並載入資料
-        function forceUnlock() {
-            document.getElementById('auth-overlay').style.display = 'none';
-            initDatabase();
-        }
-
-        function initDatabase() {
-            var scheduleRef = database.ref('kobe_schedules');
-            var expenseRef = database.ref('kobe_expenses');
-
-            scheduleRef.on('value', function(snapshot) {
-                if (snapshot.exists()) {
-                    var data = snapshot.val();
-                    globalSchedules = Object.keys(data).map(function(key) {
-                        return Object.assign({ id: key }, data[key]);
-                    });
-                } else {
-                    globalSchedules = [];
-                }
-                renderCards();
-            });
-
-            expenseRef.on('value', function(snapshot) {
-                var listContainer = document.getElementById('expense-list');
-                var total = 0; var html = '';
-
-                if (snapshot.exists()) {
-                    var data = snapshot.val();
-                    var items = Object.keys(data).map(function(key) {
-                        return Object.assign({ id: key }, data[key]);
-                    }).reverse();
-
-                    items.forEach(function(item) {
-                        total += item.amount;
-                        html += '<div style="background: white; padding: 12px 14px; border-radius: 14px; border: 1px solid #e2e8f0; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">' +
-                            '<div><p style="font-size: 12px; font-weight: bold;">' + item.title + '</p><p style="font-size: 10px; color: #94a3b8;">' + new Date(item.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + '</p></div>' +
-                            '<div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 13px; font-weight: bold; color: #BE3144;">¥' + item.amount.toLocaleString() + '</span>' +
-                            '<button onclick="deleteExpense(\'' + item.id + '\')" style="background: none; border: none; color: #cbd5e1; cursor: pointer;"><i class="fas fa-trash-alt"></i></button></div>' +
-                        '</div>';
-                    });
-                } else {
-                    html = '<p style="font-size: 11px; color: #94a3b8; text-align: center; padding: 20px;">目前尚無開銷紀錄</p>';
-                }
-
-                listContainer.innerHTML = html;
-                document.getElementById('total-expense').innerText = '¥' + total.toLocaleString();
-                var progress = (total / 7000) * 100;
-                if (progress > 100) progress = 100;
-                document.getElementById('budget-progress').style.width = progress + '%';
-            });
-        }
-
-        function renderCards() {
-            var dayNum = currentActiveDay;
-            var dayItems = globalSchedules.filter(function(item) { return item.day == dayNum; });
-            dayItems.sort(function(a, b) { return (a.time || '').localeCompare(b.time || ''); });
-
-            var container = document.getElementById('schedule-container');
-            if (dayItems.length === 0) {
-                container.innerHTML = '<p style="text-align: center; font-size: 12px; color: #94a3b8; padding: 40px 0;">目前無安排行程</p>';
-                return;
-            }
-
-            var html = '';
-            dayItems.forEach(function(item) {
-                var tagClass = 'tag-spot'; var tagText = '🎯 景點';
-                if (item.type === 'transport') { tagClass = 'tag-transport'; tagText = '🚌 交通'; }
-                else if (item.type === 'hotel') { tagClass = 'tag-hotel'; tagText = '🏨 住宿'; }
-                else if (item.type === 'restaurant') { tagClass = 'tag-restaurant'; tagText = '🍱 美食'; }
-
-                var costHtml = item.cost ? '<span class="cost-badge">' + item.cost + '</span>' : '';
-                var navHtml = item.nav ? '<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(item.nav) + '" target="_blank" onclick="event.stopPropagation();" style="color: #BE3144; margin-left: 8px;"><i class="fas fa-location-arrow"></i></a>' : '';
-
-                var subHtml = '';
-                if (item.subItems && Array.isArray(item.subItems) && item.subItems.length > 0) {
-                    subHtml += '<div class="sub-container"><p style="font-size: 10px; font-weight: bold; color: #b45309; margin-bottom: 4px;"><i class="fas fa-stream"></i> 詳細規劃與備忘</p>';
-                    item.subItems.forEach(function(sub) {
-                        var subCost = sub.cost ? '<span style="float: right; font-size: 9px; font-weight: bold; color: #BE3144; background: white; padding: 1px 6px; border-radius: 9999px; border: 1px solid #fecdd3;">' + sub.cost + '</span>' : '';
-                        subHtml += '<div class="sub-card">' +
-                            '<div style="font-size: 11px; font-weight: bold; color: #1e293b;">' + (sub.time ? '<span style="background: white; border: 1px solid #fed7aa; padding: 1px 4px; border-radius: 4px; margin-right: 4px; font-size: 10px;">' + sub.time + '</span>' : '') + sub.title + subCost + '</div>' +
-                            (sub.desc ? '<p style="font-size: 10px; color: #475569; margin-top: 2px; line-height: 1.4;">' + sub.desc + '</p>' : '') +
-                        '</div>';
-                    });
-                    subHtml += '</div>';
-                }
-
-                html += '<div class="card" onclick="openEditModal(\'' + item.id + '\')">' +
-                    '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">' +
-                        '<div><span class="tag ' + tagClass + '">' + tagText + '</span> <span style="font-size: 11px; font-weight: bold; color: #475569; margin-left: 4px;">' + (item.time || '') + '</span></div>' +
-                        '<div style="display: flex; align-items: center;">' +
-                            costHtml + navHtml +
-                            '<button type="button" onclick="event.stopPropagation(); deleteSchedule(\'' + item.id + '\')" style="background: none; border: none; color: #cbd5e1; cursor: pointer; margin-left: 10px;"><i class="fas fa-trash-alt"></i></button>' +
-                        '</div>' +
-                    '</div>' +
-                    '<h4 style="font-size: 13px; font-weight: bold; color: #0f172a; margin-bottom: 2px;">' + item.title + '</h4>' +
-                    '<p style="font-size: 11px; color: #64748b; line-height: 1.5;">' + (item.desc || '') + '</p>' +
-                    subHtml +
-                '</div>';
-            });
-
-            container.innerHTML = html;
-        }
-
-        function openEditModal(key) {
-            var item = globalSchedules.find(function(sch) { return sch.id === key; });
-            if (!item) return;
-
-            document.getElementById('edit-key').value = key;
-            document.getElementById('edit-day').value = item.day || 1;
-            document.getElementById('edit-time').value = item.time || '';
-            document.getElementById('edit-type').value = item.type || 'spot';
-            document.getElementById('edit-cost').value = item.cost || '';
-            document.getElementById('edit-nav').value = item.nav || '';
-            document.getElementById('edit-title').value = item.title || '';
-            document.getElementById('edit-desc').value = item.desc || '';
-
-            document.getElementById('edit-modal').style.display = 'flex';
-        }
-
-        function closeEditModal() {
-            document.getElementById('edit-modal').style.display = 'none';
-        }
-
-        function saveScheduleUpdate() {
-            var key = document.getElementById('edit-key').value;
-            var day = parseInt(document.getElementById('edit-day').value);
-            var time = document.getElementById('edit-time').value.trim() || "全天";
-            var type = document.getElementById('edit-type').value;
-            var cost = document.getElementById('edit-cost').value.trim();
-            var nav = document.getElementById('edit-nav').value.trim();
-            var title = document.getElementById('edit-title').value.trim();
-            var desc = document.getElementById('edit-desc').value.trim();
-
-            if (!title) { alert('行程標題不能為空！'); return; }
-
-            database.ref('kobe_schedules/' + key).update({
-                day: day, time: time, type: type, cost: cost, nav: nav, title: title, desc: desc
-            }, function(error) {
-                if (!error) {
-                    closeEditModal();
-                    if (day !== currentActiveDay) { switchDay(day); }
-                } else {
-                    alert('更新失敗！');
-                }
-            });
-        }
-
-        function addCustomSchedule() {
-            var day = parseInt(document.getElementById('sch-day').value);
-            var time = document.getElementById('sch-time').value.trim() || "全天";
-            var type = document.getElementById('sch-type').value;
-            var cost = document.getElementById('sch-cost').value.trim();
-            var nav = document.getElementById('sch-nav').value.trim();
-            var title = document.getElementById('sch-title').value.trim();
-            var desc = document.getElementById('sch-desc').value.trim();
-
-            if (!title) { alert('請輸入行程標題！'); return; }
-
-            database.ref('kobe_schedules').push({
-                day: day, time: time, type: type, cost: cost, nav: nav, title: title, desc: desc
-            });
-
-            document.getElementById('sch-time').value = '';
-            document.getElementById('sch-cost').value = '';
-            document.getElementById('sch-nav').value = '';
-            document.getElementById('sch-title').value = '';
-            document.getElementById('sch-desc').value = '';
-            switchDay(day);
-        }
-
-        function deleteSchedule(id) {
-            if (confirm('確定要刪除這張行程卡片嗎？')) {
-                database.ref('kobe_schedules/' + id).remove();
-            }
-        }
-
-        function switchDay(day) {
-            currentActiveDay = day;
-            for (var i = 1; i <= 5; i++) {
-                var btn = document.getElementById('day-btn-' + i);
-                if (btn) btn.className = (i === day) ? 'day-btn active' : 'day-btn';
-            }
-            renderCards();
-        }
-
-        function navTo(page) {
-            document.getElementById('page-schedule').style.display = (page === 'schedule') ? 'block' : 'none';
-            document.getElementById('page-ledger').style.display = (page === 'ledger') ? 'block' : 'none';
-            document.getElementById('page-info').style.display = (page === 'info') ? 'block' : 'none';
-
-            document.getElementById('nav-schedule').className = (page === 'schedule') ? 'active' : '';
-            document.getElementById('nav-ledger').className = (page === 'ledger') ? 'active' : '';
-            document.getElementById('nav-info').className = (page === 'info') ? 'active' : '';
-        }
-
-        function addExpense() {
-            var title = document.getElementById('exp-title').value.trim();
-            var amount = parseInt(document.getElementById('exp-amount').value);
-            var category = document.getElementById('exp-category').value;
-
-            if (!title || isNaN(amount) || amount <= 0) { alert('請輸入項目與金額！'); return; }
-
-            database.ref('kobe_expenses').push({ title: title, amount: amount, category: category, timestamp: Date.now() });
-            document.getElementById('exp-title').value = '';
-            document.getElementById('exp-amount').value = '';
-        }
-
-        function deleteExpense(id) {
-            if (confirm('確定要刪除這筆紀錄嗎？')) {
-                database.ref('kobe_expenses/' + id).remove();
-            }
-        }
-
-        switchDay(1);
-    </script>
-</body>
-</html>
+        </
