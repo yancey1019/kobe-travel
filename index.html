@@ -149,30 +149,53 @@
         }
         .login-input {
             width: 100%;
-            padding: 12px;
+            padding: 10px 12px;
             border: 1px solid #cbd5e1;
             border-radius: 12px;
-            font-size: 14px;
+            font-size: 13px;
             margin-top: 4px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             outline: none;
+            background: #fff;
         }
         .btn-submit {
             width: 100%;
             background: linear-gradient(135deg, #BE3144, #D97706);
             color: white;
-            padding: 12px;
+            padding: 11px;
             border: none;
             border-radius: 12px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
+        }
+        /* 編輯彈窗 Modal */
+        #edit-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(4px);
+            z-index: 9998;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .modal-box {
+            background: #ffffff;
+            width: 100%;
+            max-width: 360px;
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
+            max-height: 90vh;
+            overflow-y: auto;
         }
     </style>
 </head>
 <body>
 
-    <!-- 🔒 登入遮罩 (山陽極簡架構) -->
+    <!-- 🔒 登入遮罩 -->
     <div id="auth-overlay">
         <div class="login-box">
             <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #BE3144, #F05941); border-radius: 14px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
@@ -217,10 +240,38 @@
             </div>
 
             <p style="font-size: 11px; color: #92400e; text-align: center; margin: 10px 0;">
-                <i class="fas fa-hand-pointer mr-1"></i>點擊母卡片可修改，子行程直接於下方展開
+                <i class="fas fa-hand-pointer mr-1"></i>點擊卡片即可編輯修改內容與費用
             </p>
 
             <div id="schedule-container"></div>
+
+            <!-- 新增行程卡片 -->
+            <div style="background: white; border: 1px dashed #f59e0b; border-radius: 16px; padding: 14px; margin-top: 20px;">
+                <h3 style="font-size: 12px; font-weight: bold; color: #334155; margin-bottom: 8px;">➕ 新增自訂行程卡片</h3>
+                <div style="display: flex; gap: 8px;">
+                    <select id="sch-day" class="login-input" style="width: 50%;">
+                        <option value="1">D1 (10/18)</option>
+                        <option value="2">D2 (10/19)🎂</option>
+                        <option value="3">D3 (10/20)</option>
+                        <option value="4">D4 (10/21)</option>
+                        <option value="5">D5 (10/22)</option>
+                    </select>
+                    <input type="text" id="sch-time" placeholder="時間 (例: 14:00-15:00)" class="login-input" style="width: 50%;">
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <select id="sch-type" class="login-input" style="width: 50%;">
+                        <option value="spot">🎯 景點</option>
+                        <option value="restaurant">🍱 餐廳</option>
+                        <option value="transport">🚌 交通</option>
+                        <option value="hotel">🏨 住宿</option>
+                    </select>
+                    <input type="text" id="sch-cost" placeholder="費用 (例: 340日幣)" class="login-input" style="width: 50%;">
+                </div>
+                <input type="text" id="sch-nav" placeholder="Google Maps 地標名稱 (選填)" class="login-input">
+                <input type="text" id="sch-title" placeholder="行程標題" class="login-input" style="font-weight: bold;">
+                <textarea id="sch-desc" rows="2" placeholder="說明或備忘..." class="login-input" style="resize: none;"></textarea>
+                <button type="button" onclick="addCustomSchedule()" class="btn-submit">推送到雙方手機行程表</button>
+            </div>
         </div>
 
         <!-- 記帳頁面 -->
@@ -230,6 +281,10 @@
                 <h2 id="total-expense" style="font-size: 28px; font-weight: bold; margin-top: 4px;">¥0</h2>
                 <div style="background: rgba(255,255,255,0.2); height: 8px; border-radius: 9999px; margin-top: 12px; overflow: hidden;">
                     <div id="budget-progress" style="background: #fbbf24; height: 100%; width: 0%;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 10px; color: #cbd5e1; margin-top: 6px;">
+                    <span>累計總花費</span>
+                    <span>基礎交通預備金: ¥7,000</span>
                 </div>
             </div>
 
@@ -273,6 +328,64 @@
         </div>
     </main>
 
+    <!-- 編輯卡片 Modal -->
+    <div id="edit-modal">
+        <div class="modal-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
+                <h3 style="font-size: 14px; font-weight: bold; color: #0f172a;"><i class="fas fa-edit" style="color: #BE3144; margin-right: 4px;"></i> 編輯行程資料</h3>
+                <button type="button" onclick="closeEditModal()" style="background: none; border: none; font-size: 18px; color: #94a3b8; cursor: pointer;">×</button>
+            </div>
+            <input type="hidden" id="edit-key">
+
+            <div style="display: flex; gap: 8px;">
+                <div style="width: 50%;">
+                    <label style="font-size: 10px; font-weight: bold; color: #64748b;">天數</label>
+                    <select id="edit-day" class="login-input">
+                        <option value="1">D1 (10/18)</option>
+                        <option value="2">D2 (10/19)🎂</option>
+                        <option value="3">D3 (10/20)</option>
+                        <option value="4">D4 (10/21)</option>
+                        <option value="5">D5 (10/22)</option>
+                    </select>
+                </div>
+                <div style="width: 50%;">
+                    <label style="font-size: 10px; font-weight: bold; color: #64748b;">時間</label>
+                    <input type="text" id="edit-time" class="login-input">
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+                <div style="width: 50%;">
+                    <label style="font-size: 10px; font-weight: bold; color: #64748b;">類別</label>
+                    <select id="edit-type" class="login-input">
+                        <option value="spot">🎯 景點</option>
+                        <option value="restaurant">🍱 餐廳</option>
+                        <option value="transport">🚌 交通</option>
+                        <option value="hotel">🏨 住宿</option>
+                    </select>
+                </div>
+                <div style="width: 50%;">
+                    <label style="font-size: 10px; font-weight: bold; color: #64748b;">費用金額</label>
+                    <input type="text" id="edit-cost" class="login-input" placeholder="例: 340日幣">
+                </div>
+            </div>
+
+            <label style="font-size: 10px; font-weight: bold; color: #64748b;">Google Maps 地標關鍵字</label>
+            <input type="text" id="edit-nav" class="login-input">
+
+            <label style="font-size: 10px; font-weight: bold; color: #64748b;">行程標題</label>
+            <input type="text" id="edit-title" class="login-input" style="font-weight: bold;">
+
+            <label style="font-size: 10px; font-weight: bold; color: #64748b;">說明備忘</label>
+            <textarea id="edit-desc" rows="3" class="login-input" style="resize: none;"></textarea>
+
+            <div style="display: flex; gap: 8px; margin-top: 8px;">
+                <button type="button" onclick="closeEditModal()" class="login-input" style="width: 35%; margin: 0; background: #f1f5f9; border: none; cursor: pointer;">取消</button>
+                <button type="button" onclick="saveScheduleUpdate()" class="btn-submit" style="width: 65%;">儲存並即時更新</button>
+            </div>
+        </div>
+    </div>
+
     <!-- 底部選單 -->
     <nav>
         <button type="button" onclick="navTo('schedule')" id="nav-schedule" class="active">
@@ -311,7 +424,6 @@
         let globalSchedules = [];
         let currentActiveDay = 1;
 
-        // 登入監聽：只要有登入，遮罩立刻消失
         auth.onAuthStateChanged(function(user) {
             var overlay = document.getElementById('auth-overlay');
             if (user) {
@@ -322,7 +434,6 @@
             }
         });
 
-        // 山陽同款直通登入
         function executeLogin() {
             var email = document.getElementById('login-email').value.trim();
             var pass = document.getElementById('login-pass').value.trim();
@@ -351,7 +462,6 @@
                 });
         }
 
-        // 資料庫即時連線 (從 Firebase 取代本地肥大陣列)
         function initDatabase() {
             var scheduleRef = database.ref('kobe_schedules');
             var expenseRef = database.ref('kobe_expenses');
@@ -432,10 +542,13 @@
                     subHtml += '</div>';
                 }
 
-                html += '<div class="card">' +
+                html += '<div class="card" onclick="openEditModal(\'' + item.id + '\')">' +
                     '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">' +
                         '<div><span class="tag ' + tagClass + '">' + tagText + '</span> <span style="font-size: 11px; font-weight: bold; color: #475569; margin-left: 4px;">' + (item.time || '') + '</span></div>' +
-                        '<div>' + costHtml + navHtml + '</div>' +
+                        '<div style="display: flex; align-items: center;">' +
+                            costHtml + navHtml +
+                            '<button type="button" onclick="event.stopPropagation(); deleteSchedule(\'' + item.id + '\')" style="background: none; border: none; color: #cbd5e1; cursor: pointer; margin-left: 10px;"><i class="fas fa-trash-alt"></i></button>' +
+                        '</div>' +
                     '</div>' +
                     '<h4 style="font-size: 13px; font-weight: bold; color: #0f172a; margin-bottom: 2px;">' + item.title + '</h4>' +
                     '<p style="font-size: 11px; color: #64748b; line-height: 1.5;">' + (item.desc || '') + '</p>' +
@@ -446,44 +559,33 @@
             container.innerHTML = html;
         }
 
-        function switchDay(day) {
-            currentActiveDay = day;
-            for (var i = 1; i <= 5; i++) {
-                var btn = document.getElementById('day-btn-' + i);
-                if (btn) btn.className = (i === day) ? 'day-btn active' : 'day-btn';
-            }
-            renderCards();
+        // 開啟編輯視窗
+        function openEditModal(key) {
+            var item = globalSchedules.find(function(sch) { return sch.id === key; });
+            if (!item) return;
+
+            document.getElementById('edit-key').value = key;
+            document.getElementById('edit-day').value = item.day || 1;
+            document.getElementById('edit-time').value = item.time || '';
+            document.getElementById('edit-type').value = item.type || 'spot';
+            document.getElementById('edit-cost').value = item.cost || '';
+            document.getElementById('edit-nav').value = item.nav || '';
+            document.getElementById('edit-title').value = item.title || '';
+            document.getElementById('edit-desc').value = item.desc || '';
+
+            document.getElementById('edit-modal').style.display = 'flex';
         }
 
-        function navTo(page) {
-            document.getElementById('page-schedule').style.display = (page === 'schedule') ? 'block' : 'none';
-            document.getElementById('page-ledger').style.display = (page === 'ledger') ? 'block' : 'none';
-            document.getElementById('page-info').style.display = (page === 'info') ? 'block' : 'none';
-
-            document.getElementById('nav-schedule').className = (page === 'schedule') ? 'active' : '';
-            document.getElementById('nav-ledger').className = (page === 'ledger') ? 'active' : '';
-            document.getElementById('nav-info').className = (page === 'info') ? 'active' : '';
+        function closeEditModal() {
+            document.getElementById('edit-modal').style.display = 'none';
         }
 
-        function addExpense() {
-            var title = document.getElementById('exp-title').value.trim();
-            var amount = parseInt(document.getElementById('exp-amount').value);
-            var category = document.getElementById('exp-category').value;
-
-            if (!title || isNaN(amount) || amount <= 0) { alert('請輸入項目與金額！'); return; }
-
-            database.ref('kobe_expenses').push({ title: title, amount: amount, category: category, timestamp: Date.now() });
-            document.getElementById('exp-title').value = '';
-            document.getElementById('exp-amount').value = '';
-        }
-
-        function deleteExpense(id) {
-            if (confirm('確定要刪除這筆紀錄嗎？')) {
-                database.ref('kobe_expenses/' + id).remove();
-            }
-        }
-
-        switchDay(1);
-    </script>
-</body>
-</html>
+        function saveScheduleUpdate() {
+            var key = document.getElementById('edit-key').value;
+            var day = parseInt(document.getElementById('edit-day').value);
+            var time = document.getElementById('edit-time').value.trim() || "全天";
+            var type = document.getElementById('edit-type').value;
+            var cost = document.getElementById('edit-cost').value.trim();
+            var nav = document.getElementById('edit-nav').value.trim();
+            var title = document.getElementById('edit-title').value.trim();
+            var
