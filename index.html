@@ -132,7 +132,7 @@
         #auth-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(11, 25, 44, 0.95);
+            background: rgba(11, 25, 44, 0.96);
             z-index: 9999;
             display: flex;
             align-items: center;
@@ -162,10 +162,10 @@
             width: 100%;
             background: linear-gradient(135deg, #BE3144, #D97706);
             color: white;
-            padding: 11px;
+            padding: 12px;
             border: none;
             border-radius: 12px;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -214,7 +214,7 @@
 </head>
 <body>
 
-    <!-- 🔒 專屬登入遮罩 -->
+    <!-- 🔒 登入遮罩 (山陽極簡同款) -->
     <div id="auth-overlay">
         <div class="login-box">
             <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #BE3144, #F05941); border-radius: 14px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
@@ -307,7 +307,7 @@
                 </div>
             </div>
 
-            <!-- 各類花費佔比面板 (7 大類統計) -->
+            <!-- 7 大分類統計面板 -->
             <div style="background: white; padding: 14px 16px; border-radius: 16px; border: 1px solid #e2e8f0; margin-bottom: 14px;">
                 <h3 style="font-size: 12px; font-weight: bold; margin-bottom: 12px; color: #1e293b; display: flex; align-items: center; justify-content: space-between;">
                     <span><i class="fas fa-chart-pie" style="color: #BE3144; margin-right: 6px;"></i>各類開銷佔比分析</span>
@@ -316,7 +316,7 @@
                 <div id="category-stats-container"></div>
             </div>
 
-            <!-- 新增記帳表單 (7 大分類) -->
+            <!-- 新增記帳 (7 大類) -->
             <div style="background: white; padding: 14px; border-radius: 16px; border: 1px solid #e2e8f0; margin-bottom: 16px;">
                 <h3 style="font-size: 12px; font-weight: bold; margin-bottom: 10px; color: #334155;">➕ 新增一筆開銷</h3>
                 <div style="display: flex; gap: 8px; margin-bottom: 8px;">
@@ -431,13 +431,13 @@
         </button>
     </nav>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK (完全採用山陽驗證流程) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <script>
-        const firebaseConfig = {
+        var firebaseConfig = {
             apiKey: "AIzaSyDc9xXYYTCpOzKk_N03dQZCfO2OkPOn-U8",
             authDomain: "japan-travel-202606.firebaseapp.com",
             databaseURL: "https://japan-travel-202606-default-rtdb.firebaseio.com",
@@ -451,12 +451,12 @@
             firebase.initializeApp(firebaseConfig);
         }
 
-        const auth = firebase.auth();
-        const database = firebase.database();
-        let globalSchedules = [];
-        let currentActiveDay = 1;
+        var auth = firebase.auth();
+        var database = firebase.database();
+        var globalSchedules = [];
+        var currentActiveDay = 1;
 
-        const categoryMeta = {
+        var categoryMeta = {
             "交通": { icon: "🚌", color: "#b45309" },
             "門票/觀光": { icon: "🎟️", color: "#047857" },
             "美食": { icon: "🍱", color: "#c2410c" },
@@ -466,7 +466,7 @@
             "其他": { icon: "📦", color: "#64748b" }
         };
 
-        // 登入狀態監聽：只要已經登入過，遮罩立刻隱藏
+        // 監聽登入狀態：只要已認證立刻隱藏遮罩並載入資料庫
         auth.onAuthStateChanged(function(user) {
             var overlay = document.getElementById('auth-overlay');
             if (user) {
@@ -477,43 +477,39 @@
             }
         });
 
+        // 🌟 絕對回饋的原生登入函式（若有錯直接 alert 彈窗，絕不無聲卡死）
         function executeLogin() {
-            var emailInput = document.getElementById('login-email');
-            var passInput = document.getElementById('login-pass');
-            var errEl = document.getElementById('login-error');
+            var email = document.getElementById('login-email').value.trim();
+            var pass = document.getElementById('login-pass').value.trim();
             var btnEl = document.getElementById('btn-login-submit');
 
-            var email = emailInput ? emailInput.value.trim() : '';
-            var pass = passInput ? passInput.value.trim() : '';
-
             if (!email || !pass) {
-                errEl.innerText = "請輸入 Email 和密碼！";
-                errEl.style.display = 'block';
+                alert("請輸入 Email 和密碼！");
                 return;
             }
 
             btnEl.disabled = true;
-            btnEl.innerText = "驗證中...";
-            errEl.style.display = 'none';
+            btnEl.innerText = "驗證連線中...";
 
             auth.signInWithEmailAndPassword(email, pass)
-                .then(function() {
-                    document.getElementById('auth-overlay').style.display = 'none';
+                .then(function(userCredential) {
+                    var overlay = document.getElementById('auth-overlay');
+                    if (overlay) overlay.style.display = 'none';
                 })
                 .catch(function(error) {
                     btnEl.disabled = false;
                     btnEl.innerText = "驗證身份並登入";
-                    console.error("Login Error:", error);
+                    console.error("登入錯誤:", error);
+                    // 直接彈出視窗讓妳知道到底是什麼原因
                     if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
-                        errEl.innerText = "密碼不正確，請重新確認！";
+                        alert("密碼不正確，請重新檢查！");
                     } else if (error.code === 'auth/user-not-found') {
-                        errEl.innerText = "找不到此帳號，請檢查 Email 是否正確！";
+                        alert("找不到此帳號，請確認 Email 是否為 yancey1019@gmail.com！");
                     } else if (error.code === 'auth/too-many-requests') {
-                        errEl.innerText = "登入失敗次數過多，Google 暫時鎖定，請等候片刻再試！";
+                        alert("登入嘗試次數過多，Google 暫時鎖定，請等候約 5~10 分鐘！");
                     } else {
-                        errEl.innerText = "登入失敗：" + error.message;
+                        alert("登入失敗：" + error.message);
                     }
-                    errEl.style.display = 'block';
                 });
         }
 
@@ -576,4 +572,205 @@
                             '</div>' +
                             '<div style="display: flex; align-items: center; gap: 8px;">' +
                                 '<span style="font-size: 13px; font-weight: bold; color: #BE3144;">¥' + amt.toLocaleString() + '</span>' +
-                                '<button onclick="deleteExpense(\'' + item.id + '\')" style="background: none; border: none; color: #cbd5e1;
+                                '<button onclick="deleteExpense(\'' + item.id + '\')" style="background: none; border: none; color: #cbd5e1; cursor: pointer; padding: 4px;"><i class="fas fa-trash-alt"></i></button>' +
+                            '</div>' +
+                        '</div>';
+                    });
+                } else {
+                    document.getElementById('stat-count-badge').innerText = '共 0 筆';
+                    html = '<p style="font-size: 11px; color: #94a3b8; text-align: center; padding: 20px;">目前尚無開銷紀錄</p>';
+                }
+
+                listContainer.innerHTML = html;
+                document.getElementById('total-expense').innerText = '¥' + total.toLocaleString();
+
+                var progress = (total / 7000) * 100;
+                if (progress > 100) progress = 100;
+                document.getElementById('budget-progress').style.width = progress + '%';
+
+                var statHtml = '';
+                var categoryKeys = ["交通", "門票/觀光", "美食", "伴手禮", "藥妝", "服飾", "其他"];
+
+                categoryKeys.forEach(function(cat) {
+                    var catAmt = catTotals[cat];
+                    var percent = total > 0 ? ((catAmt / total) * 100).toFixed(1) : "0.0";
+                    var meta = categoryMeta[cat];
+
+                    statHtml += '<div class="cat-stat-row">' +
+                        '<span style="font-weight: 600; color: #334155;">' + meta.icon + ' ' + cat + '</span>' +
+                        '<span><strong style="color: #0f172a;">¥' + catAmt.toLocaleString() + '</strong> <span style="color: #64748b; font-size: 10px; margin-left: 4px;">(' + percent + '%)</span></span>' +
+                    '</div>' +
+                    '<div class="cat-progress-bg">' +
+                        '<div class="cat-progress-bar" style="width: ' + percent + '%; background: ' + meta.color + ';"></div>' +
+                    '</div>';
+                });
+
+                statContainer.innerHTML = statHtml;
+            });
+        }
+
+        function renderCards() {
+            var dayNum = currentActiveDay;
+            var dayItems = globalSchedules.filter(function(item) { return item.day == dayNum; });
+            dayItems.sort(function(a, b) { return (a.time || '').localeCompare(b.time || ''); });
+
+            var container = document.getElementById('schedule-container');
+            if (dayItems.length === 0) {
+                container.innerHTML = '<p style="text-align: center; font-size: 12px; color: #94a3b8; padding: 40px 0;">目前無安排行程</p>';
+                return;
+            }
+
+            var html = '';
+            dayItems.forEach(function(item) {
+                var tagClass = 'tag-spot'; var tagText = '🎯 景點';
+                if (item.type === 'transport') { tagClass = 'tag-transport'; tagText = '🚌 交通'; }
+                else if (item.type === 'hotel') { tagClass = 'tag-hotel'; tagText = '🏨 住宿'; }
+                else if (item.type === 'restaurant') { tagClass = 'tag-restaurant'; tagText = '🍱 美食'; }
+
+                var costHtml = item.cost ? '<span class="cost-badge">' + item.cost + '</span>' : '';
+                var navHtml = item.nav ? '<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(item.nav) + '" target="_blank" onclick="event.stopPropagation();" style="color: #BE3144; margin-left: 8px;"><i class="fas fa-location-arrow"></i></a>' : '';
+
+                var subHtml = '';
+                if (item.subItems && Array.isArray(item.subItems) && item.subItems.length > 0) {
+                    subHtml += '<div class="sub-container"><p style="font-size: 10px; font-weight: bold; color: #b45309; margin-bottom: 4px;"><i class="fas fa-stream"></i> 詳細規劃與備忘</p>';
+                    item.subItems.forEach(function(sub) {
+                        var subCost = sub.cost ? '<span style="float: right; font-size: 9px; font-weight: bold; color: #BE3144; background: white; padding: 1px 6px; border-radius: 9999px; border: 1px solid #fecdd3;">' + sub.cost + '</span>' : '';
+                        subHtml += '<div class="sub-card">' +
+                            '<div style="font-size: 11px; font-weight: bold; color: #1e293b;">' + (sub.time ? '<span style="background: white; border: 1px solid #fed7aa; padding: 1px 4px; border-radius: 4px; margin-right: 4px; font-size: 10px;">' + sub.time + '</span>' : '') + sub.title + subCost + '</div>' +
+                            (sub.desc ? '<p style="font-size: 10px; color: #475569; margin-top: 2px; line-height: 1.4;">' + sub.desc + '</p>' : '') +
+                        '</div>';
+                    });
+                    subHtml += '</div>';
+                }
+
+                html += '<div class="card" onclick="openEditModal(\'' + item.id + '\')">' +
+                    '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">' +
+                        '<div><span class="tag ' + tagClass + '">' + tagText + '</span> <span style="font-size: 11px; font-weight: bold; color: #475569; margin-left: 4px;">' + (item.time || '') + '</span></div>' +
+                        '<div style="display: flex; align-items: center;">' +
+                            costHtml + navHtml +
+                            '<button type="button" onclick="event.stopPropagation(); deleteSchedule(\'' + item.id + '\')" style="background: none; border: none; color: #cbd5e1; cursor: pointer; margin-left: 10px;"><i class="fas fa-trash-alt"></i></button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<h4 style="font-size: 13px; font-weight: bold; color: #0f172a; margin-bottom: 2px;">' + item.title + '</h4>' +
+                    '<p style="font-size: 11px; color: #64748b; line-height: 1.5;">' + (item.desc || '') + '</p>' +
+                    subHtml +
+                '</div>';
+            });
+
+            container.innerHTML = html;
+        }
+
+        function openEditModal(key) {
+            var item = globalSchedules.find(function(sch) { return sch.id === key; });
+            if (!item) return;
+
+            document.getElementById('edit-key').value = key;
+            document.getElementById('edit-day').value = item.day || 1;
+            document.getElementById('edit-time').value = item.time || '';
+            document.getElementById('edit-type').value = item.type || 'spot';
+            document.getElementById('edit-cost').value = item.cost || '';
+            document.getElementById('edit-nav').value = item.nav || '';
+            document.getElementById('edit-title').value = item.title || '';
+            document.getElementById('edit-desc').value = item.desc || '';
+
+            document.getElementById('edit-modal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+
+        function saveScheduleUpdate() {
+            var key = document.getElementById('edit-key').value;
+            var day = parseInt(document.getElementById('edit-day').value);
+            var time = document.getElementById('edit-time').value.trim() || "全天";
+            var type = document.getElementById('edit-type').value;
+            var cost = document.getElementById('edit-cost').value.trim();
+            var nav = document.getElementById('edit-nav').value.trim();
+            var title = document.getElementById('edit-title').value.trim();
+            var desc = document.getElementById('edit-desc').value.trim();
+
+            if (!title) { alert('行程標題不能為空！'); return; }
+
+            database.ref('kobe_schedules/' + key).update({
+                day: day, time: time, type: type, cost: cost, nav: nav, title: title, desc: desc
+            }, function(error) {
+                if (!error) {
+                    closeEditModal();
+                    if (day !== currentActiveDay) { switchDay(day); }
+                } else {
+                    alert('更新失敗！');
+                }
+            });
+        }
+
+        function addCustomSchedule() {
+            var day = parseInt(document.getElementById('sch-day').value);
+            var time = document.getElementById('sch-time').value.trim() || "全天";
+            var type = document.getElementById('sch-type').value;
+            var cost = document.getElementById('sch-cost').value.trim();
+            var nav = document.getElementById('sch-nav').value.trim();
+            var title = document.getElementById('sch-title').value.trim();
+            var desc = document.getElementById('sch-desc').value.trim();
+
+            if (!title) { alert('請輸入行程標題！'); return; }
+
+            database.ref('kobe_schedules').push({
+                day: day, time: time, type: type, cost: cost, nav: nav, title: title, desc: desc
+            });
+
+            document.getElementById('sch-time').value = '';
+            document.getElementById('sch-cost').value = '';
+            document.getElementById('sch-nav').value = '';
+            document.getElementById('sch-title').value = '';
+            document.getElementById('sch-desc').value = '';
+            switchDay(day);
+        }
+
+        function deleteSchedule(id) {
+            if (confirm('確定要刪除這張行程卡片嗎？')) {
+                database.ref('kobe_schedules/' + id).remove();
+            }
+        }
+
+        function switchDay(day) {
+            currentActiveDay = day;
+            for (var i = 1; i <= 5; i++) {
+                var btn = document.getElementById('day-btn-' + i);
+                if (btn) btn.className = (i === day) ? 'day-btn active' : 'day-btn';
+            }
+            renderCards();
+        }
+
+        function navTo(page) {
+            document.getElementById('page-schedule').style.display = (page === 'schedule') ? 'block' : 'none';
+            document.getElementById('page-ledger').style.display = (page === 'ledger') ? 'block' : 'none';
+            document.getElementById('page-info').style.display = (page === 'info') ? 'block' : 'none';
+
+            document.getElementById('nav-schedule').className = (page === 'schedule') ? 'active' : '';
+            document.getElementById('nav-ledger').className = (page === 'ledger') ? 'active' : '';
+            document.getElementById('nav-info').className = (page === 'info') ? 'active' : '';
+        }
+
+        function addExpense() {
+            var title = document.getElementById('exp-title').value.trim();
+            var amount = parseInt(document.getElementById('exp-amount').value);
+            var category = document.getElementById('exp-category').value;
+
+            if (!title || isNaN(amount) || amount <= 0) { alert('請輸入項目與金額！'); return; }
+
+            database.ref('kobe_expenses').push({ title: title, amount: amount, category: category, timestamp: Date.now() });
+            document.getElementById('exp-title').value = '';
+            document.getElementById('exp-amount').value = '';
+        }
+
+        function deleteExpense(id) {
+            if (confirm('確定要刪除這筆紀錄嗎？')) {
+                database.ref('kobe_expenses/' + id).remove();
+            }
+        }
+
+        switchDay(1);
+    </script>
+</body>
+</html>
