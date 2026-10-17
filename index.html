@@ -169,7 +169,6 @@
             font-weight: bold;
             cursor: pointer;
         }
-        /* 編輯彈窗 Modal */
         #edit-modal {
             position: fixed;
             inset: 0;
@@ -195,7 +194,7 @@
 </head>
 <body>
 
-    <!-- 🔒 登入遮罩 -->
+    <!-- 🔒 登入遮罩 (加入強制開門按鈕，絕不再卡死) -->
     <div id="auth-overlay">
         <div class="login-box">
             <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #BE3144, #F05941); border-radius: 14px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
@@ -213,6 +212,7 @@
 
                 <p id="login-error" style="color: #ef4444; font-size: 11px; text-align: center; margin-bottom: 8px; display: none;"></p>
                 <button type="button" id="btn-login-submit" class="btn-submit" onclick="executeLogin()">驗證身份並登入</button>
+                <button type="button" onclick="forceUnlock()" style="width: 100%; margin-top: 8px; background: none; border: none; color: #94a3b8; font-size: 11px; cursor: pointer; text-decoration: underline;">直接進入行程 (若卡住點此)</button>
             </div>
         </div>
     </div>
@@ -229,7 +229,6 @@
     </header>
 
     <main style="padding: 16px;">
-        <!-- 行程頁面 -->
         <div id="page-schedule">
             <div class="day-bar">
                 <button onclick="switchDay(1)" id="day-btn-1" class="day-btn active">D1 (10/18)</button>
@@ -240,12 +239,11 @@
             </div>
 
             <p style="font-size: 11px; color: #92400e; text-align: center; margin: 10px 0;">
-                <i class="fas fa-hand-pointer mr-1"></i>點擊卡片即可編輯修改內容與費用
+                <i class="fas fa-hand-pointer mr-1"></i>點擊卡片可編輯修改內容與費用
             </p>
 
             <div id="schedule-container"></div>
 
-            <!-- 新增行程卡片 -->
             <div style="background: white; border: 1px dashed #f59e0b; border-radius: 16px; padding: 14px; margin-top: 20px;">
                 <h3 style="font-size: 12px; font-weight: bold; color: #334155; margin-bottom: 8px;">➕ 新增自訂行程卡片</h3>
                 <div style="display: flex; gap: 8px;">
@@ -274,7 +272,6 @@
             </div>
         </div>
 
-        <!-- 記帳頁面 -->
         <div id="page-ledger" style="display: none;">
             <div style="background: linear-gradient(135deg, #0B192C, #1E3E62, #BE3144); color: white; padding: 20px; border-radius: 20px; margin-bottom: 16px;">
                 <p style="font-size: 11px; color: #fde68a;">⚡ 雙人即時同步記帳 (JPY)</p>
@@ -308,7 +305,6 @@
             <div id="expense-list"></div>
         </div>
 
-        <!-- 資訊頁面 -->
         <div id="page-info" style="display: none;">
             <div class="card">
                 <h3 style="font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #1e3a8a;"><i class="fas fa-plane"></i> 星宇航空</h3>
@@ -399,7 +395,7 @@
         </button>
     </nav>
 
-    <!-- Firebase SDK (山陽同款輕量配置) -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
@@ -460,6 +456,12 @@
                     errEl.innerText = "登入失敗：" + error.message;
                     errEl.style.display = 'block';
                 });
+        }
+
+        // 強制開門函式：點擊直接隱藏遮罩並載入資料
+        function forceUnlock() {
+            document.getElementById('auth-overlay').style.display = 'none';
+            initDatabase();
         }
 
         function initDatabase() {
@@ -559,7 +561,6 @@
             container.innerHTML = html;
         }
 
-        // 開啟編輯視窗
         function openEditModal(key) {
             var item = globalSchedules.find(function(sch) { return sch.id === key; });
             if (!item) return;
@@ -588,4 +589,89 @@
             var cost = document.getElementById('edit-cost').value.trim();
             var nav = document.getElementById('edit-nav').value.trim();
             var title = document.getElementById('edit-title').value.trim();
-            var
+            var desc = document.getElementById('edit-desc').value.trim();
+
+            if (!title) { alert('行程標題不能為空！'); return; }
+
+            database.ref('kobe_schedules/' + key).update({
+                day: day, time: time, type: type, cost: cost, nav: nav, title: title, desc: desc
+            }, function(error) {
+                if (!error) {
+                    closeEditModal();
+                    if (day !== currentActiveDay) { switchDay(day); }
+                } else {
+                    alert('更新失敗！');
+                }
+            });
+        }
+
+        function addCustomSchedule() {
+            var day = parseInt(document.getElementById('sch-day').value);
+            var time = document.getElementById('sch-time').value.trim() || "全天";
+            var type = document.getElementById('sch-type').value;
+            var cost = document.getElementById('sch-cost').value.trim();
+            var nav = document.getElementById('sch-nav').value.trim();
+            var title = document.getElementById('sch-title').value.trim();
+            var desc = document.getElementById('sch-desc').value.trim();
+
+            if (!title) { alert('請輸入行程標題！'); return; }
+
+            database.ref('kobe_schedules').push({
+                day: day, time: time, type: type, cost: cost, nav: nav, title: title, desc: desc
+            });
+
+            document.getElementById('sch-time').value = '';
+            document.getElementById('sch-cost').value = '';
+            document.getElementById('sch-nav').value = '';
+            document.getElementById('sch-title').value = '';
+            document.getElementById('sch-desc').value = '';
+            switchDay(day);
+        }
+
+        function deleteSchedule(id) {
+            if (confirm('確定要刪除這張行程卡片嗎？')) {
+                database.ref('kobe_schedules/' + id).remove();
+            }
+        }
+
+        function switchDay(day) {
+            currentActiveDay = day;
+            for (var i = 1; i <= 5; i++) {
+                var btn = document.getElementById('day-btn-' + i);
+                if (btn) btn.className = (i === day) ? 'day-btn active' : 'day-btn';
+            }
+            renderCards();
+        }
+
+        function navTo(page) {
+            document.getElementById('page-schedule').style.display = (page === 'schedule') ? 'block' : 'none';
+            document.getElementById('page-ledger').style.display = (page === 'ledger') ? 'block' : 'none';
+            document.getElementById('page-info').style.display = (page === 'info') ? 'block' : 'none';
+
+            document.getElementById('nav-schedule').className = (page === 'schedule') ? 'active' : '';
+            document.getElementById('nav-ledger').className = (page === 'ledger') ? 'active' : '';
+            document.getElementById('nav-info').className = (page === 'info') ? 'active' : '';
+        }
+
+        function addExpense() {
+            var title = document.getElementById('exp-title').value.trim();
+            var amount = parseInt(document.getElementById('exp-amount').value);
+            var category = document.getElementById('exp-category').value;
+
+            if (!title || isNaN(amount) || amount <= 0) { alert('請輸入項目與金額！'); return; }
+
+            database.ref('kobe_expenses').push({ title: title, amount: amount, category: category, timestamp: Date.now() });
+            document.getElementById('exp-title').value = '';
+            document.getElementById('exp-amount').value = '';
+        }
+
+        function deleteExpense(id) {
+            if (confirm('確定要刪除這筆紀錄嗎？')) {
+                database.ref('kobe_expenses/' + id).remove();
+            }
+        }
+
+        switchDay(1);
+    </script>
+</body>
+</html>
