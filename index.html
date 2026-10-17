@@ -190,13 +190,12 @@
             max-height: 90vh;
             overflow-y: auto;
         }
-        /* 記帳分類統計項目條 */
         .cat-stat-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
             font-size: 11px;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         .cat-progress-bg {
             background: #f1f5f9;
@@ -265,6 +264,7 @@
 
             <div id="schedule-container"></div>
 
+            <!-- 新增行程卡片 -->
             <div style="background: white; border: 1px dashed #f59e0b; border-radius: 16px; padding: 14px; margin-top: 20px;">
                 <h3 style="font-size: 12px; font-weight: bold; color: #334155; margin-bottom: 8px;">➕ 新增自訂行程卡片</h3>
                 <div style="display: flex; gap: 8px;">
@@ -295,7 +295,6 @@
 
         <!-- 記帳頁面 -->
         <div id="page-ledger" style="display: none;">
-            <!-- 總花費看板 -->
             <div style="background: linear-gradient(135deg, #0B192C, #1E3E62, #BE3144); color: white; padding: 20px; border-radius: 20px; margin-bottom: 14px;">
                 <p style="font-size: 11px; color: #fde68a;">⚡ 雙人即時同步記帳 (JPY)</p>
                 <h2 id="total-expense" style="font-size: 28px; font-weight: bold; margin-top: 4px;">¥0</h2>
@@ -304,7 +303,7 @@
                 </div>
                 <div style="display: flex; justify-content: space-between; font-size: 10px; color: #cbd5e1; margin-top: 6px;">
                     <span>累計總花費</span>
-                    <span>基礎交通預備金: ¥7,000[cite: 1]</span>
+                    <span>基礎交通預備金: ¥7,000</span>
                 </div>
             </div>
 
@@ -314,12 +313,10 @@
                     <span><i class="fas fa-chart-pie" style="color: #BE3144; margin-right: 6px;"></i>各類開銷佔比分析</span>
                     <span id="stat-count-badge" style="font-size: 10px; font-weight: normal; color: #64748b;">共 0 筆</span>
                 </h3>
-                <div id="category-stats-container">
-                    <!-- 動態渲染 7 大分類比例 -->
-                </div>
+                <div id="category-stats-container"></div>
             </div>
 
-            <!-- 新增記帳表單 (7 大分類下拉) -->
+            <!-- 新增記帳表單 (7 大分類) -->
             <div style="background: white; padding: 14px; border-radius: 16px; border: 1px solid #e2e8f0; margin-bottom: 16px;">
                 <h3 style="font-size: 12px; font-weight: bold; margin-bottom: 10px; color: #334155;">➕ 新增一筆開銷</h3>
                 <div style="display: flex; gap: 8px; margin-bottom: 8px;">
@@ -348,17 +345,17 @@
             <div class="card">
                 <h3 style="font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #1e3a8a;"><i class="fas fa-plane"></i> 星宇航空</h3>
                 <div style="font-size: 11px; line-height: 1.8; color: #475569;">
-                    <p>去程 JX834 (10/18): 06:50 桃園 ➔ 10:30 神戶[cite: 1]</p>
-                    <p>回程 JX835 (10/22): 11:40 神戶 ➔ 13:40 桃園[cite: 1, 4]</p>
+                    <p>去程 JX834 (10/18): 06:50 桃園 ➔ 10:30 神戶</p>
+                    <p>回程 JX835 (10/22): 11:40 神戶 ➔ 13:40 桃園</p>
                 </div>
             </div>
             <div class="card">
                 <h3 style="font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #065f46;"><i class="fas fa-hotel"></i> Comfort Hotel ERA Kobe Sannomiya</h3>
-                <p style="font-size: 11px; color: #64748b;">10/18~10/22 連住 4 晚，位於三宮精華商圈[cite: 1, 3, 4]。</p>
+                <p style="font-size: 11px; color: #64748b;">10/18~10/22 連住 4 晚，位於三宮精華商圈。</p>
             </div>
             <div class="card">
                 <h3 style="font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #92400e;"><i class="fas fa-ticket-alt"></i> 交通票券</h3>
-                <p style="font-size: 11px; color: #475569;">D3 阪神三宮站購買「三宮姬路一日券 (¥1,600)」，當日可無限搭乘阪神/神戶高速/山陽電車全線[cite: 2]。</p>
+                <p style="font-size: 11px; color: #475569;">D3 阪神三宮站購買「三宮姬路一日券 (¥1,600)」，當日可無限搭乘阪神/神戶高速/山陽電車全線。</p>
             </div>
         </div>
     </main>
@@ -376,11 +373,11 @@
                 <div style="width: 50%;">
                     <label style="font-size: 10px; font-weight: bold; color: #64748b;">天數</label>
                     <select id="edit-day" class="login-input">
-                        <option value="1">D1 (10/18)[cite: 1]</option>
-                        <option value="2">D2 (10/19)🎂[cite: 1]</option>
-                        <option value="3">D3 (10/20)[cite: 2]</option>
-                        <option value="4">D4 (10/21)[cite: 3]</option>
-                        <option value="5">D5 (10/22)[cite: 3, 4]</option>
+                        <option value="1">D1 (10/18)</option>
+                        <option value="2">D2 (10/19)🎂</option>
+                        <option value="3">D3 (10/20)</option>
+                        <option value="4">D4 (10/21)</option>
+                        <option value="5">D5 (10/22)</option>
                     </select>
                 </div>
                 <div style="width: 50%;">
@@ -425,4 +422,158 @@
     <nav>
         <button type="button" onclick="navTo('schedule')" id="nav-schedule" class="active">
             <i class="fas fa-map-marked-alt" style="font-size: 18px; margin-bottom: 3px;"></i>行程
-        </
+        </button>
+        <button type="button" onclick="navTo('ledger')" id="nav-ledger">
+            <i class="fas fa-wallet" style="font-size: 18px; margin-bottom: 3px;"></i>雙人記帳
+        </button>
+        <button type="button" onclick="navTo('info')" id="nav-info">
+            <i class="fas fa-info-circle" style="font-size: 18px; margin-bottom: 3px;"></i>重要資訊
+        </button>
+    </nav>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDc9xXYYTCpOzKk_N03dQZCfO2OkPOn-U8",
+            authDomain: "japan-travel-202606.firebaseapp.com",
+            databaseURL: "https://japan-travel-202606-default-rtdb.firebaseio.com",
+            projectId: "japan-travel-202606",
+            storageBucket: "japan-travel-202606.firebasestorage.app",
+            messagingSenderId: "688622010243",
+            appId: "1:688622010243:web:7371df5d2f301f6e4bc0b6"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        const auth = firebase.auth();
+        const database = firebase.database();
+        let globalSchedules = [];
+        let currentActiveDay = 1;
+
+        const categoryMeta = {
+            "交通": { icon: "🚌", color: "#b45309" },
+            "門票/觀光": { icon: "🎟️", color: "#047857" },
+            "美食": { icon: "🍱", color: "#c2410c" },
+            "伴手禮": { icon: "🎁", color: "#db2777" },
+            "藥妝": { icon: "💊", color: "#0284c7" },
+            "服飾": { icon: "👗", color: "#7c3aed" },
+            "其他": { icon: "📦", color: "#64748b" }
+        };
+
+        // 登入狀態監聽：只要已經登入過，遮罩立刻隱藏
+        auth.onAuthStateChanged(function(user) {
+            var overlay = document.getElementById('auth-overlay');
+            if (user) {
+                if (overlay) overlay.style.display = 'none';
+                initDatabase();
+            } else {
+                if (overlay) overlay.style.display = 'flex';
+            }
+        });
+
+        function executeLogin() {
+            var emailInput = document.getElementById('login-email');
+            var passInput = document.getElementById('login-pass');
+            var errEl = document.getElementById('login-error');
+            var btnEl = document.getElementById('btn-login-submit');
+
+            var email = emailInput ? emailInput.value.trim() : '';
+            var pass = passInput ? passInput.value.trim() : '';
+
+            if (!email || !pass) {
+                errEl.innerText = "請輸入 Email 和密碼！";
+                errEl.style.display = 'block';
+                return;
+            }
+
+            btnEl.disabled = true;
+            btnEl.innerText = "驗證中...";
+            errEl.style.display = 'none';
+
+            auth.signInWithEmailAndPassword(email, pass)
+                .then(function() {
+                    document.getElementById('auth-overlay').style.display = 'none';
+                })
+                .catch(function(error) {
+                    btnEl.disabled = false;
+                    btnEl.innerText = "驗證身份並登入";
+                    console.error("Login Error:", error);
+                    if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+                        errEl.innerText = "密碼不正確，請重新確認！";
+                    } else if (error.code === 'auth/user-not-found') {
+                        errEl.innerText = "找不到此帳號，請檢查 Email 是否正確！";
+                    } else if (error.code === 'auth/too-many-requests') {
+                        errEl.innerText = "登入失敗次數過多，Google 暫時鎖定，請等候片刻再試！";
+                    } else {
+                        errEl.innerText = "登入失敗：" + error.message;
+                    }
+                    errEl.style.display = 'block';
+                });
+        }
+
+        function initDatabase() {
+            var scheduleRef = database.ref('kobe_schedules');
+            var expenseRef = database.ref('kobe_expenses');
+
+            scheduleRef.on('value', function(snapshot) {
+                if (snapshot.exists()) {
+                    var data = snapshot.val();
+                    globalSchedules = Object.keys(data).map(function(key) {
+                        return Object.assign({ id: key }, data[key]);
+                    });
+                } else {
+                    globalSchedules = [];
+                }
+                renderCards();
+            });
+
+            expenseRef.on('value', function(snapshot) {
+                var listContainer = document.getElementById('expense-list');
+                var statContainer = document.getElementById('category-stats-container');
+                var total = 0; 
+                var html = '';
+
+                var catTotals = {
+                    "交通": 0,
+                    "門票/觀光": 0,
+                    "美食": 0,
+                    "伴手禮": 0,
+                    "藥妝": 0,
+                    "服飾": 0,
+                    "其他": 0
+                };
+
+                if (snapshot.exists()) {
+                    var data = snapshot.val();
+                    var items = Object.keys(data).map(function(key) {
+                        return Object.assign({ id: key }, data[key]);
+                    }).reverse();
+
+                    document.getElementById('stat-count-badge').innerText = '共 ' + items.length + ' 筆';
+
+                    items.forEach(function(item) {
+                        var amt = Number(item.amount) || 0;
+                        total += amt;
+
+                        var cat = item.category;
+                        if (cat === "門票") cat = "門票/觀光";
+                        if (!catTotals.hasOwnProperty(cat)) cat = "其他";
+
+                        catTotals[cat] += amt;
+
+                        var meta = categoryMeta[cat] || categoryMeta["其他"];
+
+                        html += '<div style="background: white; padding: 12px 14px; border-radius: 14px; border: 1px solid #e2e8f0; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">' +
+                            '<div>' +
+                                '<p style="font-size: 12px; font-weight: bold; color: #1e293b;">' + meta.icon + ' ' + item.title + '</p>' +
+                                '<p style="font-size: 10px; color: #94a3b8; margin-top: 2px;">' + cat + ' · ' + new Date(item.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + '</p>' +
+                            '</div>' +
+                            '<div style="display: flex; align-items: center; gap: 8px;">' +
+                                '<span style="font-size: 13px; font-weight: bold; color: #BE3144;">¥' + amt.toLocaleString() + '</span>' +
+                                '<button onclick="deleteExpense(\'' + item.id + '\')" style="background: none; border: none; color: #cbd5e1;
