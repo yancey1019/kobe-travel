@@ -19,11 +19,9 @@
             max-width: 440px;
             margin: 0 auto;
             min-height: 100vh;
-            position: relative;
             padding-bottom: 90px;
             -webkit-tap-highlight-color: transparent;
         }
-        /* 頂部導航 */
         header {
             background: linear-gradient(135deg, #0B192C 0%, #1E3E62 50%, #0B192C 100%);
             color: #ffffff;
@@ -31,12 +29,10 @@
             position: sticky;
             top: 0;
             z-index: 50;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        /* 天數按鈕 */
         .day-bar {
             display: flex;
             gap: 8px;
@@ -45,7 +41,6 @@
             position: sticky;
             top: 68px;
             background: rgba(250, 247, 242, 0.95);
-            backdrop-filter: blur(5px);
             z-index: 40;
         }
         .day-bar::-webkit-scrollbar { display: none; }
@@ -64,9 +59,7 @@
             background: linear-gradient(135deg, #BE3144, #D97706);
             color: #ffffff;
             border: none;
-            box-shadow: 0 2px 4px rgba(190,49,68,0.25);
         }
-        /* 行程卡片 */
         .card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -96,7 +89,6 @@
             border-radius: 9999px;
             float: right;
         }
-        /* 子行程專屬樣式 (常態展開，暖秋底色與外框) */
         .sub-container {
             margin-top: 12px;
             padding-top: 10px;
@@ -110,7 +102,6 @@
             padding: 8px 10px;
             margin-top: 6px;
         }
-        /* 底部選單 */
         nav {
             position: fixed;
             bottom: 0;
@@ -119,7 +110,6 @@
             max-width: 440px;
             margin: 0 auto;
             background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(8px);
             border-top: 1px solid #e2e8f0;
             display: flex;
             justify-content: space-around;
@@ -138,15 +128,11 @@
             cursor: pointer;
             width: 33%;
         }
-        nav button.active {
-            color: #BE3144;
-        }
-        /* 登入彈窗 */
+        nav button.active { color: #BE3144; }
         #auth-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(11, 25, 44, 0.92);
-            backdrop-filter: blur(8px);
+            background: rgba(11, 25, 44, 0.95);
             z-index: 9999;
             display: flex;
             align-items: center;
@@ -160,7 +146,6 @@
             border-radius: 24px;
             padding: 24px;
             text-align: center;
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
         }
         .login-input {
             width: 100%;
@@ -182,13 +167,12 @@
             font-size: 14px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(190,49,68,0.2);
         }
     </style>
 </head>
 <body>
 
-    <!-- 🔒 專屬登入遮罩 (純原生 DOM，絕不失效) -->
+    <!-- 🔒 登入遮罩 (山陽極簡架構) -->
     <div id="auth-overlay">
         <div class="login-box">
             <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #BE3144, #F05941); border-radius: 14px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
@@ -213,20 +197,16 @@
     <!-- 頂部 App Bar -->
     <header>
         <div>
-            <h1 style="font-size: 17px; font-weight: bold; display: flex; align-items: center; gap: 4px;">
-                <span>神戶浪漫秋旅</span>
-                <span style="font-size: 14px;">🍁</span>
-            </h1>
+            <h1 style="font-size: 17px; font-weight: bold;">神戶浪漫秋旅 🍁</h1>
             <p style="font-size: 10px; color: #fde68a;">2026.10.18 ~ 10.22 (5天4夜)</p>
         </div>
-        <div id="weather-badge" style="background: rgba(255,255,255,0.15); font-size: 10px; padding: 4px 10px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.2);">
+        <div style="background: rgba(255,255,255,0.15); font-size: 10px; padding: 4px 10px; border-radius: 9999px;">
             <i class="fas fa-sparkles text-amber-300"></i> <span>神戶港灣</span>
         </div>
     </header>
 
-    <!-- 主內容區 -->
     <main style="padding: 16px;">
-        <!-- 行程分頁 -->
+        <!-- 行程頁面 -->
         <div id="page-schedule">
             <div class="day-bar">
                 <button onclick="switchDay(1)" id="day-btn-1" class="day-btn active">D1 (10/18)</button>
@@ -237,13 +217,13 @@
             </div>
 
             <p style="font-size: 11px; color: #92400e; text-align: center; margin: 10px 0;">
-                <i class="fas fa-hand-pointer mr-1"></i>點擊母行程卡片可編輯內容與費用
+                <i class="fas fa-hand-pointer mr-1"></i>點擊母卡片可修改，子行程直接於下方展開
             </p>
 
             <div id="schedule-container"></div>
         </div>
 
-        <!-- 記帳分頁 -->
+        <!-- 記帳頁面 -->
         <div id="page-ledger" style="display: none;">
             <div style="background: linear-gradient(135deg, #0B192C, #1E3E62, #BE3144); color: white; padding: 20px; border-radius: 20px; margin-bottom: 16px;">
                 <p style="font-size: 11px; color: #fde68a;">⚡ 雙人即時同步記帳 (JPY)</p>
@@ -251,16 +231,12 @@
                 <div style="background: rgba(255,255,255,0.2); height: 8px; border-radius: 9999px; margin-top: 12px; overflow: hidden;">
                     <div id="budget-progress" style="background: #fbbf24; height: 100%; width: 0%;"></div>
                 </div>
-                <div style="display: flex; justify-content: space-between; font-size: 10px; color: #cbd5e1; margin-top: 6px;">
-                    <span>累計總花費</span>
-                    <span>基礎交通預備金: ¥7,000</span>
-                </div>
             </div>
 
             <div style="background: white; padding: 14px; border-radius: 16px; border: 1px solid #e2e8f0; margin-bottom: 16px;">
                 <h3 style="font-size: 12px; font-weight: bold; margin-bottom: 10px; color: #334155;">➕ 新增一筆開銷</h3>
                 <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-                    <input type="text" id="exp-title" placeholder="項目 (如: 明石燒)" class="login-input" style="margin: 0; width: 50%;">
+                    <input type="text" id="exp-title" placeholder="項目" class="login-input" style="margin: 0; width: 50%;">
                     <input type="number" id="exp-amount" placeholder="金額 (JPY)" class="login-input" style="margin: 0; width: 50%;">
                 </div>
                 <div style="display: flex; gap: 8px;">
@@ -277,30 +253,27 @@
             <div id="expense-list"></div>
         </div>
 
-        <!-- 資訊分頁 -->
+        <!-- 資訊頁面 -->
         <div id="page-info" style="display: none;">
             <div class="card">
-                <h3 style="font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #1e3a8a;"><i class="fas fa-plane"></i> 航班時刻 (星宇航空)</h3>
+                <h3 style="font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #1e3a8a;"><i class="fas fa-plane"></i> 星宇航空</h3>
                 <div style="font-size: 11px; line-height: 1.8; color: #475569;">
-                    <p><strong>去程 JX834 (10/18 週日):</strong> 06:50 桃園 T1 ➔ 10:30 神戶 T2</p>
-                    <p><strong>回程 JX835 (10/22 週四):</strong> 11:40 神戶 T2 ➔ 13:40 桃園 T1</p>
+                    <p>去程 JX834 (10/18): 06:50 桃園 ➔ 10:30 神戶</p>
+                    <p>回程 JX835 (10/22): 11:40 神戶 ➔ 13:40 桃園</p>
                 </div>
             </div>
             <div class="card">
-                <h3 style="font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #065f46;"><i class="fas fa-hotel"></i> 下榻飯店 (4晚連住)</h3>
-                <p style="font-size: 12px; font-weight: bold;">Comfort Hotel ERA Kobe Sannomiya</p>
-                <p style="font-size: 11px; color: #64748b; margin-top: 4px;">入住：10/18 15:00 ~ 10/22 退房。位於三宮精華商圈。</p>
+                <h3 style="font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #065f46;"><i class="fas fa-hotel"></i> Comfort Hotel ERA Kobe Sannomiya</h3>
+                <p style="font-size: 11px; color: #64748b;">10/18~10/22 連住 4 晚，位於三宮精華商圈。</p>
             </div>
             <div class="card">
-                <h3 style="font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #92400e;"><i class="fas fa-ticket-alt"></i> 交通票券備忘</h3>
-                <p style="font-size: 11px; color: #475569; line-height: 1.6;">
-                    🎟️ <strong>D3 三宮姬路一日券 (¥1,600):</strong> 阪神三宮站「站長室」出示圖片購買，限當日有效，可無限次搭乘阪神/神戶高速/山陽電車全線。
-                </p>
+                <h3 style="font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #92400e;"><i class="fas fa-ticket-alt"></i> 交通票券</h3>
+                <p style="font-size: 11px; color: #475569;">D3 阪神三宮站購買「三宮姬路一日券 (¥1,600)」，當日可無限搭乘阪神/神戶高速/山陽電車全線。</p>
             </div>
         </div>
     </main>
 
-    <!-- 底部導航欄 -->
+    <!-- 底部選單 -->
     <nav>
         <button type="button" onclick="navTo('schedule')" id="nav-schedule" class="active">
             <i class="fas fa-map-marked-alt" style="font-size: 18px; margin-bottom: 3px;"></i>行程
@@ -313,7 +286,7 @@
         </button>
     </nav>
 
-    <!-- Firebase SDK (相容穩定版) -->
+    <!-- Firebase SDK (山陽同款輕量配置) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
@@ -335,9 +308,10 @@
 
         const auth = firebase.auth();
         const database = firebase.database();
-        let expenseRef, scheduleRef;
+        let globalSchedules = [];
+        let currentActiveDay = 1;
 
-        // 登入狀態監聽
+        // 登入監聽：只要有登入，遮罩立刻消失
         auth.onAuthStateChanged(function(user) {
             var overlay = document.getElementById('auth-overlay');
             if (user) {
@@ -348,15 +322,12 @@
             }
         });
 
-        // 原生直通登入函式
+        // 山陽同款直通登入
         function executeLogin() {
-            var emailInput = document.getElementById('login-email');
-            var passInput = document.getElementById('login-pass');
+            var email = document.getElementById('login-email').value.trim();
+            var pass = document.getElementById('login-pass').value.trim();
             var errEl = document.getElementById('login-error');
             var btnEl = document.getElementById('btn-login-submit');
-
-            var email = emailInput ? emailInput.value.trim() : '';
-            var pass = passInput ? passInput.value.trim() : '';
 
             if (!email || !pass) {
                 errEl.innerText = "請輸入 Email 和密碼！";
@@ -365,156 +336,25 @@
             }
 
             btnEl.disabled = true;
-            btnEl.innerText = "驗證中，請稍候...";
+            btnEl.innerText = "驗證中...";
             errEl.style.display = 'none';
 
             auth.signInWithEmailAndPassword(email, pass)
-                .then(function(userCredential) {
-                    var overlay = document.getElementById('auth-overlay');
-                    if (overlay) overlay.style.display = 'none';
+                .then(function() {
+                    document.getElementById('auth-overlay').style.display = 'none';
                 })
                 .catch(function(error) {
                     btnEl.disabled = false;
                     btnEl.innerText = "驗證身份並登入";
-                    console.error("Login Error:", error);
-                    if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
-                        errEl.innerText = "密碼不正確，請重新確認！";
-                    } else if (error.code === 'auth/user-not-found') {
-                        errEl.innerText = "找不到此帳號，請檢查 Email 是否正確！";
-                    } else if (error.code === 'auth/too-many-requests') {
-                        errEl.innerText = "登入失敗次數過多，Google 暫時鎖定，請等候片刻再試！";
-                    } else {
-                        errEl.innerText = "登入失敗：" + error.message;
-                    }
+                    errEl.innerText = "登入失敗：" + error.message;
                     errEl.style.display = 'block';
                 });
         }
 
-        // 神戶 2 版行程庫 (含常態子行程)
-        const defaultSchedules = [
-            // D1 (10/18 週日)
-            { day: 1, time: "06:50-10:30", type: "transport", title: "桃園機場 T1 → 神戶機場 T2", desc: "星宇航空 JX834，抵達後前往 1 航廈 2 樓搭乘 Port Liner。", nav: "神戶機場", cost: "" },
-            { 
-                day: 1, time: "11:30-11:58", type: "transport", title: "Port Liner：神戶空港站 → 三宮站", desc: "搭乘神戶新交通鐵道，直達三宮市區。", nav: "神戶空港站", cost: "340日幣",
-                subItems: [
-                    { time: "11:30~11:48", title: "班次一", desc: "第一優先搭乘班次", cost: "340日幣" },
-                    { time: "11:40~11:58", title: "班次二 (備用)", desc: "預備班次", cost: "340日幣" }
-                ]
-            },
-            { 
-                day: 1, time: "12:00-13:00", type: "restaurant", title: "飯店寄放行李 ＆ 逛街吃午餐", desc: "至 Comfort Hotel ERA Kobe Sannomiya 寄放行李後逛街吃午餐。", nav: "Comfort Hotel ERA Kobe Sannomiya", cost: "",
-                subItems: [
-                    { time: "12:00~13:00", title: "天婦羅 Makino (まきの)", desc: "Center Plaza B1F (必點玉子天=炸雞蛋，營業11:00~21:00)", cost: "" },
-                    { time: "備選", title: "明石燒 司", desc: "比章魚燒更嫩滑的明石燒(週日公休，留待後續平日品嚐)", cost: "" }
-                ]
-            },
-            { 
-                day: 1, time: "13:00-15:00", type: "spot", title: "三宮商圈逛街 或 高速神戶地下街桌球店巡禮 🏓", desc: "逛商店街(三宮中心商店街)或附近百貨(神戶0101、神戶阪急、M-int等)，或前往高速神戶站地下街逛市內最大乒乓球館！", nav: "三宮中心商店街", cost: "",
-                subItems: [
-                    { time: "13:16~13:20", title: "三宮站 ➔ 神戶站", desc: "搭 JR 神戶線(須磨行) 3月台至神戶站 4月台", cost: "150日幣" },
-                    { time: "13:30~14:35", title: "高速神戶站地下街", desc: "出神戶站往北走 2 分鐘，逛地下街及市內最大乒乓球館(營業10:00~20:00)", cost: "" },
-                    { time: "14:48~14:51", title: "神戶站 ➔ 三宮站", desc: "搭 JR 新快速(敦賀行) 2月台回三宮站 1月台", cost: "150日幣" }
-                ]
-            },
-            { day: 1, time: "15:00-15:30", type: "hotel", title: "Comfort Hotel ERA Kobe Sannomiya CHECK IN", desc: "辦理入住稍作休息，準備出發看夜景。", nav: "Comfort Hotel ERA Kobe Sannomiya", cost: "" },
-            { 
-                day: 1, time: "16:00-19:30", type: "spot", title: "摩耶山掬星台觀賞「千萬夜景」✨", desc: "前往三宮站搭18號公車往摩耶山掬星台看夜景(日本三大夜景)。", nav: "摩耶山 掬星台", cost: "1560日幣",
-                subItems: [
-                    { time: "16:00~17:00", title: "搭乘 18 號公車前往纜車站", desc: "神戶阪急對面「三宮駅前」搭車(時刻約 16:15 或 16:45)，約 25 分鐘至摩耶ケーブル下", cost: "230日幣" },
-                    { time: "17:00~18:00", title: "搭兩段纜車攻頂掬星台", desc: "第1段為登山車，第2段為空中纜車，飽覽璀璨千萬夜景(纜車來回票價 1,560日幣)", cost: "1560日幣" },
-                    { time: "18:00~18:30", title: "搭纜車返回地面", desc: "搭乘兩段纜車返回摩耶ケーブル下公車站", cost: "" },
-                    { time: "18:30~19:30", title: "搭 18 號公車回三宮站", desc: "時刻約 18:20 或 18:50，約 25 分鐘返回三宮市區", cost: "230日幣" }
-                ]
-            },
-            { day: 1, time: "19:30-21:00", type: "restaurant", title: "晚餐 & 逛三宮地下街、商店街、百貨", desc: "在三宮熱鬧商圈享用晚餐並散步逛街。", nav: "三宮地下街", cost: "" },
-            { day: 1, time: "21:00~", type: "hotel", title: "回飯店休息", desc: "返回 Comfort Hotel ERA 充足睡眠，準備迎接生日當天！", nav: "", cost: "" },
-
-            // D2 (10/19 週一) 🎂 寶貝生日
-            { day: 2, time: "08:00-09:00", type: "restaurant", title: "出門悠閒享用早餐 🎂", desc: "祝親愛的寶貝生日快樂！開啟滿滿幸福與浪漫的一天。", nav: "", cost: "" },
-            { day: 2, time: "09:31-10:01", type: "transport", title: "神戶三宮 → 須磨浦公園站", desc: "神戶三宮(阪急/高速)1、2月台 ➔ 高速神戶站4月台(往山陽姬路) ➔ 抵達須磨浦公園站。", nav: "須磨浦公園車站", cost: "400日幣" },
-            { day: 2, time: "10:05-14:30", type: "spot", title: "須磨浦山上遊樂園 (搭纜車A路線)", desc: "搭乘空中纜車、爬坡軌道車、旋轉展望閣與觀光纜車，環山俯瞰壯闊明石海景！(來回票價 2,100 日幣)", nav: "須磨浦山上遊樂園", cost: "2100日幣" },
-            { day: 2, time: "14:59-15:26", type: "transport", title: "須磨浦公園站 → 元町站", desc: "搭乘山陽電鐵本線特急(大阪梅田行)。", nav: "元町車站", cost: "400日幣" },
-            { 
-                day: 2, time: "15:30-18:00", type: "spot", title: "元町商店街 & 南京町中華街漫步", desc: "神戶風月堂本店法蘭酥、Frantz魔法瓶布丁、Morozoff鑽石巧克力。元町老字號「珉珉」招牌元町風餃子。一路逛往美利堅公園。", nav: "元町商店街", cost: "",
-                subItems: [
-                    { time: "伴手禮", title: "神戶風月堂(本店)", desc: "日本最古老法式餅乾品牌之一，傳奇法蘭酥(咖啡廳L.O. 18:30)", cost: "" },
-                    { time: "伴手禮", title: "Frantz & Morozoff", desc: "神戶魔法瓶布丁、Morozoff 鑽石巧克力與夾心餅乾", cost: "" },
-                    { time: "美食", title: "珉珉 元町店", desc: "老字號中華料理：招牌元町風餃子、天津飯、乾燒蝦仁", cost: "" }
-                ]
-            },
-            { day: 2, time: "18:30-18:50", type: "spot", title: "美利堅公園：浪漫璀璨煙火秀 🎆", desc: "海港夜空煙火綻放，最浪漫的生日瞬間！", nav: "美利堅公園", cost: "" },
-            { day: 2, time: "19:00-20:00", type: "restaurant", title: "生日浪漫晚餐慶祝", desc: "在美利堅公園週邊或港灣景觀餐廳共度生日晚餐。", nav: "", cost: "" },
-            { day: 2, time: "20:00-21:00", type: "spot", title: "神戶港塔展望層看夜景", desc: "欣賞神戶港迷人夜色(門票 1,200 日幣)。PORT TERRACE 餐廳可品嚐招牌神戶塔造型布丁！", nav: "神戶港塔", cost: "1200日幣" },
-            { day: 2, time: "21:00~", type: "hotel", title: "買生日蛋糕 ＆ 散步回飯店慶生", desc: "沿途選購美味蛋糕，散步約 30 分鐘回飯店溫馨慶生 🎂！", nav: "Comfort Hotel ERA Kobe Sannomiya", cost: "" },
-
-            // D3 (10/20 週二)
-            { day: 3, time: "08:00-09:00", type: "restaurant", title: "出門享用活力早餐", desc: "今天啟程前往世界遺產姬路城與舞子海峽！", nav: "", cost: "" },
-            { day: 3, time: "09:00-09:15", type: "transport", title: "購買「三宮姬路一日券」", desc: "於阪神神戶三宮站「站長室」出示票券名稱圖片購買(¥1,600)。當日電車全包無限次搭乘！", nav: "阪神神戶三宮站", cost: "1600日幣" },
-            { day: 3, time: "09:15-10:22", type: "transport", title: "神戶三宮站 → 山陽姬路站", desc: "搭乘阪神本線直通特急(山陽姬路行) 3月台，使用一日券。", nav: "山陽姬路站", cost: "一日券" },
-            { day: 3, time: "10:40-12:40", type: "spot", title: "參觀國寶：姬路城 (白鷺城)", desc: "日本第一名城、世界文化遺產！(門票 1,000 日幣，開放至 17:00)", nav: "姬路城", cost: "1000日幣" },
-            { 
-                day: 3, time: "12:40-15:00", type: "restaurant", title: "姬路商店街美食 ＆ 千姬茶屋午餐", desc: "逛御幸通、二階町商店街。名物：星鰻、炸豬排、鯛魚燒！", nav: "千姫茶屋", cost: "",
-                subItems: [
-                    { time: "特別推薦", title: "千姬茶屋 (Egret Himeji 1F)", desc: "招牌名物：吻仔魚丼飯、大滿足星鰻丼套餐(營業11:00~14:30)", cost: "" },
-                    { time: "鰻魚/穴子", title: "炭燒穴子やま義 / たまごや", desc: "姬路名物炭烤穴子魚飯", cost: "" },
-                    { time: "炸豬排/點心", title: "赤心本店 / 鯛燒本舖", desc: "老店炸豬排、熱呼呼現烤鯛魚燒與蒲鉾屋", cost: "" }
-                ]
-            },
-            { day: 3, time: "15:12-15:46", type: "transport", title: "山陽姬路站 → 山陽明石站", desc: "搭乘山陽電鐵直通特急(大阪梅田行) 3或4月台，使用一日券。", nav: "山陽明石站", cost: "一日券" },
-            { day: 3, time: "15:55-16:35", type: "spot", title: "明石魚棚商店街 (400年老街)", desc: "南口步行 5 分鐘。必吃兵庫名物「明石燒」！名店推薦「あかし多幸(招牌玉子燒)」或「よし川」。", nav: "魚之棚商店街", cost: "" },
-            { day: 3, time: "16:47-16:51", type: "transport", title: "山陽明石站 → 舞子公園站", desc: "搭乘山陽電鐵直通特急(大阪梅田行)，使用一日券。", nav: "舞子公園站", cost: "一日券" },
-            { 
-                day: 3, time: "17:00-18:00", type: "spot", title: "舞子海上步道 & 明石海峽大橋日落 🌅", desc: "欣賞明石海峽壯觀日落景象(預計 17:21)。漫步舞子海上步道(門票 250 日幣)。", nav: "舞子海上步道", cost: "250日幣",
-                subItems: [
-                    { time: "17:00~18:00", title: "明石海峽大橋日落 & 舞子海上步道", desc: "走在海面上的透明玻璃步道，俯瞰壯闊海峽(門票 250 日幣)", cost: "250日幣" },
-                    { time: "提早備選", title: "橋的科學館", desc: "營業09:15~17:00 (最晚16:30入館，門票 500 日幣)", cost: "500日幣" }
-                ]
-            },
-            { 
-                day: 3, time: "18:01-18:36", type: "transport", title: "舞子公園站 → 元町站", desc: "搭乘山陽直通特急返回元町站，使用一日券。", nav: "元町站", cost: "一日券",
-                subItems: [
-                    { time: "18:11~18:36", title: "直通特急 (推薦)", desc: "山陽直通特急(大阪梅田行)直達元町", cost: "一日券" },
-                    { time: "18:01~18:34", title: "轉乘班次 (備用)", desc: "普通車至山陽須磨站轉 S特急至元町", cost: "一日券" }
-                ]
-            },
-            { day: 3, time: "18:45-21:00", type: "restaurant", title: "晚餐：明石燒司 ＆ 逛三宮商圈", desc: "品嚐口感更嫩滑的「明石燒司」(18:00起營業)，逛商店街採購。", nav: "明石燒 司", cost: "" },
-            { day: 3, time: "21:00~", type: "hotel", title: "回飯店休息", desc: "返回飯店休息放鬆。", nav: "", cost: "" },
-
-            // D4 (10/21 週三)
-            { day: 4, time: "08:30-09:30", type: "restaurant", title: "出門悠閒享用早餐", desc: "今天前往須磨海洋世界看可愛的虎鯨與海豚！", nav: "", cost: "" },
-            { day: 4, time: "09:39-09:52", type: "transport", title: "三宮站 → 須磨海濱公園站", desc: "搭乘 JR 神戶線(西明石行) 3 月台。", nav: "須磨海濱公園站", cost: "200日幣" },
-            { day: 4, time: "10:00-14:00", type: "spot", title: "須磨海洋世界 & 館內午餐 🐬", desc: "西日本唯一虎鯨展示區！震撼力十足的虎鯨與海豚精彩展演(門票 3,100 日幣)。", nav: "須磨海洋世界", cost: "3100日幣" },
-            { 
-                day: 4, time: "14:14-14:41", type: "transport", title: "須磨海濱公園站 → 新神戶站", desc: "JR 神戶線轉地下鐵抵達新神戶站。", nav: "新神戶站", cost: "430日幣",
-                subItems: [
-                    { time: "14:14~14:18", title: "JR 神戶線", desc: "須磨海濱公園站 1月台 ➔ 新長田站 1月台", cost: "150日幣" },
-                    { time: "14:27~14:41", title: "神戶市營地下鐵西神山手線", desc: "新長田站 1月台(谷上行) ➔ 新神戶站 1月台", cost: "280日幣" }
-                ]
-            },
-            { day: 4, time: "14:50-17:30", type: "spot", title: "北野異人館街浪漫散策", desc: "充滿歐風異國情調的優雅街道，一路往三宮方向逛回去。", nav: "北野異人館街", cost: "" },
-            { day: 4, time: "17:30-18:30", type: "spot", title: "神戶市役所 24F 展望台 (免費展望)", desc: "居高臨下遠眺神戶市景與港灣景色，免費開放參觀至 22:00。", nav: "神戶市役所 24樓展望台", cost: "" },
-            { day: 4, time: "18:30-21:00", type: "restaurant", title: "晚餐 & 百貨伴手禮最後大採購", desc: "三宮地下街、商店街大採購與美食巡禮。", nav: "三宮站", cost: "" },
-            { day: 4, time: "21:00~", type: "hotel", title: "回飯店整理行李", desc: "準備打包滿滿的戰利品與伴手禮。", nav: "", cost: "" },
-
-            // D5 (10/22 週四)
-            { day: 5, time: "08:30-08:50", type: "hotel", title: "飯店 CHECK OUT", desc: "Comfort Hotel ERA Kobe 辦理退房，準備前往機場。", nav: "Comfort Hotel ERA Kobe Sannomiya", cost: "" },
-            { day: 5, time: "09:04-09:24", type: "transport", title: "Port Liner：三宮站 → 神戶空港站", desc: "搭乘神戶新交通直達神戶機場 1 航廈 2 樓。", nav: "神戶空港站", cost: "340日幣" },
-            { day: 5, time: "09:30-11:40", type: "spot", title: "機場報到 & 享用早餐", desc: "前往神戶機場 2 航廈星宇航空櫃檯報到出境，採購最後伴手禮。", nav: "神戶機場 2航廈", cost: "" },
-            { day: 5, time: "11:40-13:40", type: "transport", title: "神戶機場 T2 → 桃園機場 T1 (JX835)", desc: "搭乘星宇航空返台，滿載慶生與秋旅的美好回憶平安歸國！", nav: "桃園國際機場", cost: "" }
-        ];
-
-        let globalSchedules = [];
-        let currentActiveDay = 1;
-
+        // 資料庫即時連線 (從 Firebase 取代本地肥大陣列)
         function initDatabase() {
-            expenseRef = database.ref('kobe_expenses');
-            scheduleRef = database.ref('kobe_schedules');
-
-            scheduleRef.once('value', function(snapshot) {
-                if (!snapshot.exists()) {
-                    defaultSchedules.forEach(function(item) { scheduleRef.push(item); });
-                }
-            });
+            var scheduleRef = database.ref('kobe_schedules');
+            var expenseRef = database.ref('kobe_expenses');
 
             scheduleRef.on('value', function(snapshot) {
                 if (snapshot.exists()) {
@@ -541,4 +381,109 @@
                     items.forEach(function(item) {
                         total += item.amount;
                         html += '<div style="background: white; padding: 12px 14px; border-radius: 14px; border: 1px solid #e2e8f0; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">' +
-                            '<div><p style="font-size: 12px; font-weight: bold;">' + item.title + '</p><p style="font-size: 10px; color: #94a3b8;">' + new Date(item.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + '</p
+                            '<div><p style="font-size: 12px; font-weight: bold;">' + item.title + '</p><p style="font-size: 10px; color: #94a3b8;">' + new Date(item.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + '</p></div>' +
+                            '<div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 13px; font-weight: bold; color: #BE3144;">¥' + item.amount.toLocaleString() + '</span>' +
+                            '<button onclick="deleteExpense(\'' + item.id + '\')" style="background: none; border: none; color: #cbd5e1; cursor: pointer;"><i class="fas fa-trash-alt"></i></button></div>' +
+                        '</div>';
+                    });
+                } else {
+                    html = '<p style="font-size: 11px; color: #94a3b8; text-align: center; padding: 20px;">目前尚無開銷紀錄</p>';
+                }
+
+                listContainer.innerHTML = html;
+                document.getElementById('total-expense').innerText = '¥' + total.toLocaleString();
+                var progress = (total / 7000) * 100;
+                if (progress > 100) progress = 100;
+                document.getElementById('budget-progress').style.width = progress + '%';
+            });
+        }
+
+        function renderCards() {
+            var dayNum = currentActiveDay;
+            var dayItems = globalSchedules.filter(function(item) { return item.day == dayNum; });
+            dayItems.sort(function(a, b) { return (a.time || '').localeCompare(b.time || ''); });
+
+            var container = document.getElementById('schedule-container');
+            if (dayItems.length === 0) {
+                container.innerHTML = '<p style="text-align: center; font-size: 12px; color: #94a3b8; padding: 40px 0;">目前無安排行程</p>';
+                return;
+            }
+
+            var html = '';
+            dayItems.forEach(function(item) {
+                var tagClass = 'tag-spot'; var tagText = '🎯 景點';
+                if (item.type === 'transport') { tagClass = 'tag-transport'; tagText = '🚌 交通'; }
+                else if (item.type === 'hotel') { tagClass = 'tag-hotel'; tagText = '🏨 住宿'; }
+                else if (item.type === 'restaurant') { tagClass = 'tag-restaurant'; tagText = '🍱 美食'; }
+
+                var costHtml = item.cost ? '<span class="cost-badge">' + item.cost + '</span>' : '';
+                var navHtml = item.nav ? '<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(item.nav) + '" target="_blank" onclick="event.stopPropagation();" style="color: #BE3144; margin-left: 8px;"><i class="fas fa-location-arrow"></i></a>' : '';
+
+                var subHtml = '';
+                if (item.subItems && Array.isArray(item.subItems) && item.subItems.length > 0) {
+                    subHtml += '<div class="sub-container"><p style="font-size: 10px; font-weight: bold; color: #b45309; margin-bottom: 4px;"><i class="fas fa-stream"></i> 詳細規劃與備忘</p>';
+                    item.subItems.forEach(function(sub) {
+                        var subCost = sub.cost ? '<span style="float: right; font-size: 9px; font-weight: bold; color: #BE3144; background: white; padding: 1px 6px; border-radius: 9999px; border: 1px solid #fecdd3;">' + sub.cost + '</span>' : '';
+                        subHtml += '<div class="sub-card">' +
+                            '<div style="font-size: 11px; font-weight: bold; color: #1e293b;">' + (sub.time ? '<span style="background: white; border: 1px solid #fed7aa; padding: 1px 4px; border-radius: 4px; margin-right: 4px; font-size: 10px;">' + sub.time + '</span>' : '') + sub.title + subCost + '</div>' +
+                            (sub.desc ? '<p style="font-size: 10px; color: #475569; margin-top: 2px; line-height: 1.4;">' + sub.desc + '</p>' : '') +
+                        '</div>';
+                    });
+                    subHtml += '</div>';
+                }
+
+                html += '<div class="card">' +
+                    '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">' +
+                        '<div><span class="tag ' + tagClass + '">' + tagText + '</span> <span style="font-size: 11px; font-weight: bold; color: #475569; margin-left: 4px;">' + (item.time || '') + '</span></div>' +
+                        '<div>' + costHtml + navHtml + '</div>' +
+                    '</div>' +
+                    '<h4 style="font-size: 13px; font-weight: bold; color: #0f172a; margin-bottom: 2px;">' + item.title + '</h4>' +
+                    '<p style="font-size: 11px; color: #64748b; line-height: 1.5;">' + (item.desc || '') + '</p>' +
+                    subHtml +
+                '</div>';
+            });
+
+            container.innerHTML = html;
+        }
+
+        function switchDay(day) {
+            currentActiveDay = day;
+            for (var i = 1; i <= 5; i++) {
+                var btn = document.getElementById('day-btn-' + i);
+                if (btn) btn.className = (i === day) ? 'day-btn active' : 'day-btn';
+            }
+            renderCards();
+        }
+
+        function navTo(page) {
+            document.getElementById('page-schedule').style.display = (page === 'schedule') ? 'block' : 'none';
+            document.getElementById('page-ledger').style.display = (page === 'ledger') ? 'block' : 'none';
+            document.getElementById('page-info').style.display = (page === 'info') ? 'block' : 'none';
+
+            document.getElementById('nav-schedule').className = (page === 'schedule') ? 'active' : '';
+            document.getElementById('nav-ledger').className = (page === 'ledger') ? 'active' : '';
+            document.getElementById('nav-info').className = (page === 'info') ? 'active' : '';
+        }
+
+        function addExpense() {
+            var title = document.getElementById('exp-title').value.trim();
+            var amount = parseInt(document.getElementById('exp-amount').value);
+            var category = document.getElementById('exp-category').value;
+
+            if (!title || isNaN(amount) || amount <= 0) { alert('請輸入項目與金額！'); return; }
+
+            database.ref('kobe_expenses').push({ title: title, amount: amount, category: category, timestamp: Date.now() });
+            document.getElementById('exp-title').value = '';
+            document.getElementById('exp-amount').value = '';
+        }
+
+        function deleteExpense(id) {
+            if (confirm('確定要刪除這筆紀錄嗎？')) {
+                database.ref('kobe_expenses/' + id).remove();
+            }
+        }
+
+        switchDay(1);
+    </script>
+</body>
+</html>
