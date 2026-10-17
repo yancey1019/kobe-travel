@@ -6,7 +6,7 @@
     <title>神戶浪漫秋旅 2026</title>
     <link rel="manifest" href="manifest.json">
 
-    <!-- Tailwind CSS (穩定相容版) -->
+    <!-- Tailwind CSS (相容穩定版) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -31,7 +31,7 @@
 </head>
 <body class="pb-24 max-w-md mx-auto bg-[#FAF7F2] shadow-2xl min-h-screen relative text-slate-800">
 
-    <!-- 🔒 專屬登入遮罩 -->
+    <!-- 🔒 專屬登入遮罩 (純 Div 架構，杜絕 Form 阻斷) -->
     <div id="auth-overlay" style="display: flex;" class="fixed inset-0 bg-[#0B192C]/90 backdrop-blur-md z-[999] items-center justify-center p-4">
         <div class="bg-white w-full max-w-sm rounded-3xl p-7 shadow-2xl text-center border border-amber-100">
             <div class="w-14 h-14 bg-gradient-to-tr from-[#BE3144] to-[#F05941] text-white rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-lg shadow-rose-200">
@@ -40,7 +40,7 @@
             <h2 class="text-xl font-bold text-slate-800 tracking-wide">神戶浪漫秋旅 🍁</h2>
             <p class="text-xs text-amber-800/60 mt-1 mb-5">2026 慶生之旅 · 雙人專屬登入</p>
 
-            <form onsubmit="event.preventDefault(); window.handleLogin();" class="space-y-3.5 text-left">
+            <div class="space-y-3.5 text-left">
                 <div>
                     <label class="text-[11px] font-bold text-slate-400 block mb-1">電子郵件</label>
                     <input type="email" id="login-email" placeholder="example@gmail.com" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-rose-400">
@@ -50,8 +50,8 @@
                     <input type="password" id="login-pass" placeholder="••••••••" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-rose-400">
                 </div>
                 <p id="login-error" class="text-xs text-rose-500 hidden text-center font-medium leading-relaxed"></p>
-                <button type="submit" id="btn-login-submit" class="w-full bg-gradient-to-r from-[#BE3144] to-[#D97706] text-white p-3 rounded-xl font-bold text-sm shadow-md shadow-rose-200 active:scale-98 transition-transform mt-2">驗證身份並登入</button>
-            </form>
+                <button type="button" id="btn-login-submit" onclick="executeLogin()" class="w-full bg-gradient-to-r from-[#BE3144] to-[#D97706] text-white p-3 rounded-xl font-bold text-sm shadow-md shadow-rose-200 active:scale-98 transition-transform mt-2">驗證身份並登入</button>
+            </div>
         </div>
     </div>
 
@@ -208,4 +208,195 @@
                         <p class="text-[11px] text-amber-800">非 24 小時制，限當日有效。在「阪神神戶三宮站」站長室向站務員出示圖片購買。可無限次搭乘阪神電車、神戶高速線與山陽電車全線！</p>
                     </div>
                     <p class="text-[11px] text-slate-500">💰 <strong>交通預備金：</strong>每人建議預留至少 7,000 日幣現金。</p>
-                    <p class="text-
+                    <p class="text-[11px] text-slate-500">📞 <strong>緊急求助：</strong>日本報警 110 / 救護車 119 | 台北駐大阪經濟文化辦事處: +81-6-6443-8481</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 編輯彈窗 Modal -->
+    <div id="edit-modal" class="fixed inset-0 bg-slate-900/60 hidden items-center justify-center p-4 z-50 backdrop-blur-xs">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-5 shadow-2xl animate-fade-in-up border border-slate-100 max-h-[90vh] overflow-y-auto no-scrollbar">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-3.5">
+                <h3 class="font-bold text-slate-800 text-sm flex items-center gap-1.5">
+                    <span class="w-6 h-6 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center text-xs"><i class="fas fa-edit"></i></span>
+                    <span>修改行程資料</span>
+                </h3>
+                <button type="button" onclick="closeEditModal()" class="text-slate-400 hover:text-slate-600 text-lg p-1">×</button>
+            </div>
+            <input type="hidden" id="edit-key">
+            
+            <div class="grid grid-cols-2 gap-2.5 mb-2.5">
+                <div>
+                    <label class="text-[11px] font-bold text-slate-400 block mb-1">天數</label>
+                    <select id="edit-day" class="w-full border border-slate-200 rounded-xl p-2 text-xs focus:outline-none focus:border-rose-400 bg-white">
+                        <option value="1">D1 (10/18)</option>
+                        <option value="2">D2 (10/19)🎂</option>
+                        <option value="3">D3 (10/20)</option>
+                        <option value="4">D4 (10/21)</option>
+                        <option value="5">D5 (10/22)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[11px] font-bold text-slate-400 block mb-1">時間</label>
+                    <input type="text" id="edit-time" class="w-full border border-slate-200 rounded-xl p-2 text-xs focus:outline-none focus:border-rose-400">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2.5 mb-2.5">
+                <div>
+                    <label class="text-[11px] font-bold text-slate-400 block mb-1">分類</label>
+                    <select id="edit-type" class="w-full border border-slate-200 rounded-xl p-2 text-xs focus:outline-none focus:border-rose-400 bg-white">
+                        <option value="spot">🎯 景點</option>
+                        <option value="restaurant">🍱 餐廳</option>
+                        <option value="transport">🚌 交通</option>
+                        <option value="hotel">🏨 住宿</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[11px] font-bold text-slate-400 block mb-1">預估費用金額</label>
+                    <input type="text" id="edit-cost" class="w-full border border-slate-200 rounded-xl p-2 text-xs focus:outline-none focus:border-rose-400" placeholder="如: 340日幣">
+                </div>
+            </div>
+            <div class="mb-2.5">
+                <label class="text-[11px] font-bold text-slate-400 block mb-1">Google Maps 搜尋地標</label>
+                <input type="text" id="edit-nav" class="w-full border border-slate-200 rounded-xl p-2 text-xs focus:outline-none focus:border-rose-400">
+            </div>
+            <div class="mb-2.5">
+                <label class="text-[11px] font-bold text-slate-400 block mb-1">行程標題</label>
+                <input type="text" id="edit-title" class="w-full border border-slate-200 rounded-xl p-2 text-xs focus:outline-none focus:border-rose-400 font-semibold">
+            </div>
+            <div class="mb-4">
+                <label class="text-[11px] font-bold text-slate-400 block mb-1">說明與備忘</label>
+                <textarea id="edit-desc" rows="3" class="w-full border border-slate-200 rounded-xl p-2 text-xs focus:outline-none focus:border-rose-400"></textarea>
+            </div>
+            <div class="flex gap-2.5">
+                <button type="button" onclick="closeEditModal()" class="w-1/3 border border-slate-200 text-slate-500 rounded-xl text-xs font-medium py-2.5">取消</button>
+                <button type="button" onclick="saveScheduleUpdate()" class="w-2/3 bg-gradient-to-r from-[#BE3144] to-[#D97706] text-white rounded-xl text-xs font-bold py-2.5 shadow-md shadow-rose-200 active:scale-98 transition-transform">儲存並即時更新</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部導航欄 -->
+    <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/95 backdrop-blur-md border-t border-slate-200/80 flex justify-around py-2 shadow-lg z-50">
+        <button type="button" onclick="navTo('schedule')" id="nav-schedule" class="flex flex-col items-center gap-0.5 text-xs font-bold active-tab w-full">
+            <i class="fas fa-map-marked-alt text-lg mb-0.5"></i>行程
+        </button>
+        <button type="button" onclick="navTo('ledger')" id="nav-ledger" class="flex flex-col items-center gap-0.5 text-xs font-medium text-slate-400 w-full">
+            <i class="fas fa-wallet text-lg mb-0.5"></i>雙人記帳
+        </button>
+        <button type="button" onclick="navTo('info')" id="nav-info" class="flex flex-col items-center gap-0.5 text-xs font-medium text-slate-400 w-full">
+            <i class="fas fa-info-circle text-lg mb-0.5"></i>重要資訊
+        </button>
+    </nav>
+
+    <!-- Firebase SDK (相容穩定版 10.8.0) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDc9xXYYTCpOzKk_N03dQZCfO2OkPOn-U8",
+            authDomain: "japan-travel-202606.firebaseapp.com",
+            databaseURL: "https://japan-travel-202606-default-rtdb.firebaseio.com",
+            projectId: "japan-travel-202606",
+            storageBucket: "japan-travel-202606.firebasestorage.app",
+            messagingSenderId: "688622010243",
+            appId: "1:688622010243:web:7371df5d2f301f6e4bc0b6"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        const auth = firebase.auth();
+        const database = firebase.database();
+        let expenseRef, scheduleRef;
+
+        // 登入狀態監聽
+        auth.onAuthStateChanged((user) => {
+            const overlay = document.getElementById('auth-overlay');
+            if (user) {
+                if (overlay) overlay.style.display = 'none';
+                initDatabaseListeners();
+            } else {
+                if (overlay) overlay.style.display = 'flex';
+            }
+        });
+
+        // 🌟 直通驗證函式：拿掉 setPersistence 阻塞，直接調用 signInWithEmailAndPassword
+        function executeLogin() {
+            const emailInput = document.getElementById('login-email');
+            const passInput = document.getElementById('login-pass');
+            const errEl = document.getElementById('login-error');
+            const btnEl = document.getElementById('btn-login-submit');
+
+            const email = emailInput ? emailInput.value.trim() : '';
+            const pass = passInput ? passInput.value.trim() : '';
+
+            if (!email || !pass) {
+                errEl.innerText = "請輸入 Email 和密碼！";
+                errEl.classList.remove('hidden');
+                return;
+            }
+
+            btnEl.disabled = true;
+            btnEl.innerText = "驗證中，請稍候...";
+            errEl.classList.add('hidden');
+
+            auth.signInWithEmailAndPassword(email, pass)
+                .then((userCredential) => {
+                    const overlay = document.getElementById('auth-overlay');
+                    if (overlay) overlay.style.display = 'none';
+                })
+                .catch((error) => {
+                    btnEl.disabled = false;
+                    btnEl.innerText = "驗證身份並登入";
+                    console.error("Login Error:", error);
+                    if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+                        errEl.innerText = "密碼不正確，請重新確認！";
+                    } else if (error.code === 'auth/user-not-found') {
+                        errEl.innerText = "找不到此帳號，請檢查 Email 是否正確！";
+                    } else if (error.code === 'auth/too-many-requests') {
+                        errEl.innerText = "登入失敗次數過多，Google 暫時鎖定，請等候片刻再試！";
+                    } else {
+                        errEl.innerText = "登入失敗：" + error.message;
+                    }
+                    errEl.classList.remove('hidden');
+                });
+        }
+
+        // 神戶 2 版行程庫 (含常態子行程)
+        const defaultSchedules = [
+            // D1 (10/18 週日)
+            { day: 1, time: "06:50-10:30", type: "transport", title: "桃園機場 T1 → 神戶機場 T2", desc: "星宇航空 JX834，抵達後前往 1 航廈 2 樓搭乘 Port Liner。", nav: "神戶機場", cost: "" },
+            { 
+                day: 1, time: "11:30-11:58", type: "transport", title: "Port Liner：神戶空港站 → 三宮站", desc: "搭乘神戶新交通鐵道，直達三宮市區。", nav: "神戶空港站", cost: "340日幣",
+                subItems: [
+                    { time: "11:30~11:48", title: "班次一", desc: "第一優先搭乘班次", cost: "340日幣" },
+                    { time: "11:40~11:58", title: "班次二 (備用)", desc: "預備班次", cost: "340日幣" }
+                ]
+            },
+            { 
+                day: 1, time: "12:00-13:00", type: "restaurant", title: "飯店寄放行李 ＆ 逛街吃午餐", desc: "至 Comfort Hotel ERA Kobe Sannomiya 寄放行李後逛街吃午餐。", nav: "Comfort Hotel ERA Kobe Sannomiya", cost: "",
+                subItems: [
+                    { time: "12:00~13:00", title: "天婦羅 Makino (まきの)", desc: "Center Plaza B1F (必點玉子天=炸雞蛋，營業11:00~21:00)", cost: "" },
+                    { time: "備選", title: "明石燒 司", desc: "比章魚燒更嫩滑的明石燒(週日公休，留待後續平日品嚐)", cost: "" }
+                ]
+            },
+            { 
+                day: 1, time: "13:00-15:00", type: "spot", title: "三宮商圈逛街 或 高速神戶地下街桌球店巡禮 🏓", desc: "逛商店街(三宮中心商店街)或附近百貨(神戶0101、神戶阪急、M-int等)，或前往高速神戶站地下街逛市內最大乒乓球館！", nav: "三宮中心商店街", cost: "",
+                subItems: [
+                    { time: "13:16~13:20", title: "三宮站 ➔ 神戶站", desc: "搭 JR 神戶線(須磨行) 3月台至神戶站 4月台", cost: "150日幣" },
+                    { time: "13:30~14:35", title: "高速神戶站地下街", desc: "出神戶站往北走 2 分鐘，逛地下街及市內最大乒乓球館(營業10:00~20:00)", cost: "" },
+                    { time: "14:48~14:51", title: "神戶站 ➔ 三宮站", desc: "搭 JR 新快速(敦賀行) 2月台回三宮站 1月台", cost: "150日幣" }
+                ]
+            },
+            { day: 1, time: "15:00-15:30", type: "hotel", title: "Comfort Hotel ERA Kobe Sannomiya CHECK IN", desc: "辦理入住稍作休息，準備出發看夜景。", nav: "Comfort Hotel ERA Kobe Sannomiya", cost: "" },
+            { 
+                day: 1, time: "16:00-19:30", type: "spot", title: "摩耶山掬星台觀賞「千萬夜景」✨", desc: "前往三宮站搭18號公車往摩耶山掬星台看夜景(日本三大夜景)。", nav: "摩耶山 掬星台", cost: "1560日幣",
+                subItems: [
+                    { time: "16:00~17:00", title: "搭乘 18 號公車前往纜車站", desc: "神戶阪急對面「三宮駅前」搭車(時刻約 16:15 或 16:45)，約 25 分鐘至摩耶ケーブル下", cost: "230日幣" },
+                    { time: "17:00~18:00", title: "搭兩段纜車攻頂掬星台", desc: "第1段為登山車，第2段為空中纜車，飽覽璀璨千萬夜景(纜車來回票價 1,560日幣)", cost: "1560日幣" },
+                    { time: "18:00~18:30", title: "搭纜車返回地面", desc: "搭乘兩段纜車返回摩耶ケーブル下公車站", cost: "" },
+                    { time: "18:30~19:30", title: "搭 18 號公車回三宮站", desc: "時刻約 18:20 或 18:50，約 25 分鐘返回三宮市區", cost: "230日幣" }
